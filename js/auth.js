@@ -1,6 +1,15 @@
-// Auth logic — pure ES5, no const/let, no async/await, no destructuring
+// Auth logic — uses Edge Function + Resend for magic links
 var currentPage = window.location.pathname.split('/').pop() || 'index.html';
 var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+var magicLinkUrl = SUPABASE_URL + '/functions/v1/send-magic-link';
+
+function sendMagicLink(email) {
+  return fetch(magicLinkUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, redirectTo: baseUrl + 'dashboard.html' }),
+  }).then(function(r) { return r.json(); });
+}
 
 // Non-blocking: redirect if already logged in
 if (currentPage === 'index.html' || currentPage === 'register.html') {
@@ -21,12 +30,10 @@ if (currentPage === 'index.html') {
       btn.disabled = true;
       btn.textContent = 'Envoi en cours...';
 
-      supabase.auth.signInWithOtp({ email: email, options: { emailRedirectTo: baseUrl + 'dashboard.html' } })
-        .then(function(r) {
-          if (r.error) { err.textContent = r.error.message; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; }
-          else { window.location.href = 'magic-link-sent.html?email=' + encodeURIComponent(email); }
-        })
-        .catch(function() { err.textContent = 'Erreur réseau. Réessayez.'; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; });
+      sendMagicLink(email).then(function(r) {
+        if (r.error) { err.textContent = r.error; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; }
+        else { window.location.href = 'magic-link-sent.html?email=' + encodeURIComponent(email); }
+      }).catch(function() { err.textContent = 'Erreur réseau. Réessayez.'; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; });
     });
   }
 }
@@ -51,12 +58,10 @@ if (currentPage === 'register.html') {
       btn.textContent = 'Envoi en cours...';
       localStorage.setItem('pending_profile', JSON.stringify({ first_name: firstName, last_name: lastName, email: email, phone: phone || null, company: company || null, job_title: jobTitle || null }));
 
-      supabase.auth.signInWithOtp({ email: email, options: { data: { first_name: firstName, last_name: lastName }, emailRedirectTo: baseUrl + 'dashboard.html' } })
-        .then(function(r) {
-          if (r.error) { err.textContent = r.error.message; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; localStorage.removeItem('pending_profile'); }
-          else { window.location.href = 'magic-link-sent.html?email=' + encodeURIComponent(email) + '&register=true'; }
-        })
-        .catch(function() { err.textContent = 'Erreur réseau. Réessayez.'; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; localStorage.removeItem('pending_profile'); });
+      sendMagicLink(email).then(function(r) {
+        if (r.error) { err.textContent = r.error; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; localStorage.removeItem('pending_profile'); }
+        else { window.location.href = 'magic-link-sent.html?email=' + encodeURIComponent(email) + '&register=true'; }
+      }).catch(function() { err.textContent = 'Erreur réseau. Réessayez.'; err.classList.remove('hidden'); btn.disabled = false; btn.textContent = "Recevoir le lien d'accès"; localStorage.removeItem('pending_profile'); });
     });
   }
 }
@@ -76,15 +81,14 @@ if (currentPage === 'magic-link-sent.html') {
       if (cooldown) return;
       resendBtn.disabled = true;
       resendMsg.classList.add('hidden');
-      supabase.auth.signInWithOtp({ email: sentEmail, options: { emailRedirectTo: baseUrl + 'dashboard.html' } })
-        .then(function(r) {
-          if (r.error) { resendMsg.textContent = 'Erreur : ' + r.error.message; resendMsg.classList.remove('hidden'); resendBtn.disabled = false; }
-          else {
-            resendMsg.textContent = 'Lien renvoyé avec succès.'; resendMsg.classList.remove('hidden');
-            cooldown = true; var rem = 60; resendBtn.textContent = 'Renvoyer (' + rem + 's)';
-            var iv = setInterval(function() { rem--; resendBtn.textContent = 'Renvoyer (' + rem + 's)'; if (rem <= 0) { clearInterval(iv); cooldown = false; resendBtn.disabled = false; resendBtn.textContent = 'Renvoyer'; } }, 1000);
-          }
-        }).catch(function() { resendBtn.disabled = false; });
+      sendMagicLink(sentEmail).then(function(r) {
+        if (r.error) { resendMsg.textContent = 'Erreur : ' + r.error; resendMsg.classList.remove('hidden'); resendBtn.disabled = false; }
+        else {
+          resendMsg.textContent = 'Lien renvoyé avec succès.'; resendMsg.classList.remove('hidden');
+          cooldown = true; var rem = 60; resendBtn.textContent = 'Renvoyer (' + rem + 's)';
+          var iv = setInterval(function() { rem--; resendBtn.textContent = 'Renvoyer (' + rem + 's)'; if (rem <= 0) { clearInterval(iv); cooldown = false; resendBtn.disabled = false; resendBtn.textContent = 'Renvoyer'; } }, 1000);
+        }
+      }).catch(function() { resendBtn.disabled = false; });
     });
   }
 
