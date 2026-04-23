@@ -11,6 +11,18 @@ function sendMagicLink(email) {
   }).then(function(r) { return r.json(); });
 }
 
+// Handle magic link callback — parse token from URL hash/query
+if (window.location.hash && window.location.hash.includes('access_token')) {
+  // Supabase puts tokens in the hash fragment after magic link redirect
+  // The Supabase SDK auto-detects this and creates a session
+  // Wait a moment for SDK to process, then redirect
+  setTimeout(function() {
+    getSession().then(function(s) {
+      if (s) window.location.href = 'dashboard.html';
+    });
+  }, 500);
+}
+
 // Non-blocking: redirect if already logged in
 if (currentPage === 'index.html' || currentPage === 'register.html') {
   getSession().then(function(s) { if (s) window.location.href = 'dashboard.html'; }).catch(function() {});
