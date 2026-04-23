@@ -87,9 +87,9 @@ async function requireAuth() {
 
 // Listen for sign out — only redirect on protected pages (not login/register/magic-link)
 if (_isSupabaseReady && !window.location.search.includes('preview')) {
-  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  var _sbCurrentPage = window.location.pathname.split('/').pop() || 'index.html';
   var publicPages = ['index.html', 'register.html', 'magic-link-sent.html', ''];
-  if (publicPages.indexOf(currentPage) === -1) {
+  if (publicPages.indexOf(_sbCurrentPage) === -1) {
     supabase.auth.onAuthStateChange(function(event) {
       if (event === 'SIGNED_OUT') {
         window.location.href = 'index.html';

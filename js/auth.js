@@ -1,7 +1,7 @@
 // Auth logic for login, register, magic-link-sent pages
 // Executes immediately — no async top-level to avoid blocking form listeners
 
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+var currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
 // Non-blocking: redirect if already logged in
 if (currentPage === 'index.html' || currentPage === 'register.html') {
