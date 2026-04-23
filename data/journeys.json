@@ -1,0 +1,372 @@
+{
+  "journeys": [
+    {
+      "id": "A1",
+      "section": "agriculteur",
+      "title": "Onboarding agriculteur",
+      "module": "Onboarding",
+      "userStory": "En tant qu'agriculteur invité par mon conseiller, j'active mon compte et j'arrive sur un tableau de bord que je comprends rapidement.",
+      "screens": "Login -> parcours d'onboarding guidé -> choix du synchronisateur parcellaire (Mes Parcelles, SMAG, Geofolia, Weuse) -> import du parcellaire -> arrivée sur la home.",
+      "objectif": "Je comprends à quoi sert l'outil et ce que je dois faire pour aller plus loin.",
+      "criteria": [
+        "Les étapes de l'onboarding sont claires et enchaînées logiquement",
+        "Le choix du synchronisateur parcellaire est compréhensible",
+        "La promesse / valeur à la sortie de l'onboarding est lisible",
+        "Le temps perçu pour finir l'onboarding est raisonnable",
+        "L'arrivée sur la home donne envie de creuser"
+      ]
+    },
+    {
+      "id": "A2",
+      "section": "agriculteur",
+      "title": "Parcelles & assolement",
+      "module": "Agronomie > Parcelles & assolement",
+      "userStory": "En tant qu'agriculteur, je visualise mes parcelles, je crée et je projette mon assolement prévisionnel sur plusieurs campagnes.",
+      "screens": "Liste parcellaire -> fiche parcelle -> création d'un assolement prévisionnel -> propagation sur plusieurs parcelles -> cycle de rotation pluriannuel.",
+      "objectif": "Je visualise simplement mes parcelles et la rotation que je prévois.",
+      "criteria": [
+        "La différence parcelle / assolement / rotation est claire",
+        "Créer un assolement prévisionnel est intuitif",
+        "Propager un assolement sur plusieurs parcelles est évident",
+        "Les campagnes / années sont bien lisibles visuellement",
+        "La vue liste parcellaire est exploitable au quotidien"
+      ]
+    },
+    {
+      "id": "A3",
+      "section": "agriculteur",
+      "title": "ITK (Itinéraires techniques)",
+      "module": "Agronomie > ITK",
+      "userStory": "En tant qu'agriculteur, je construis mes itinéraires techniques par culture avec mon conseiller pour cadrer mon prévisionnel.",
+      "screens": "Création d'un ITK -> suite d'opérations dans le temps -> affectation aux cultures / parcelles -> signature de l'ITK.",
+      "objectif": "Je comprends comment un ITK cadre mon prévisionnel économique.",
+      "criteria": [
+        "La logique ITK -> culture -> parcelle est compréhensible",
+        "Créer un ITK est intuitif (opérations, doses, prix)",
+        "Le lien ITK -> prévisionnel économique est explicite",
+        "La validation / signature d'un ITK est claire",
+        "Les ITK existants sont faciles à retrouver et dupliquer"
+      ]
+    },
+    {
+      "id": "A4",
+      "section": "agriculteur",
+      "title": "Carnet de plaine",
+      "module": "Agronomie > Carnet de plaine",
+      "userStory": "En tant qu'agriculteur, je mets à jour au fil de l'eau les interventions réellement réalisées sur mes parcelles.",
+      "screens": "Dépôt des exports FMS ou saisie manuelle -> remontée des opérations -> signalement des données à corriger -> comparaison prévu / réalisé.",
+      "objectif": "Je vois en direct l'écart entre ce que j'avais prévu et ce que je réalise.",
+      "criteria": [
+        "Déposer un export FMS est simple",
+        "Les opérations mal récupérées sont clairement signalées",
+        "La saisie manuelle d'une opération est ergonomique",
+        "Le delta prévisionnel / concrétisé est lisible",
+        "L'effort de mise à jour est tenable dans le temps"
+      ]
+    },
+    {
+      "id": "A5",
+      "section": "agriculteur",
+      "title": "Trésorerie : prévisionnel 12 mois",
+      "module": "Trésorerie > Prévisionnel 12 mois",
+      "userStory": "En tant qu'agriculteur, je consulte mon prévisionnel de trésorerie 12 mois pour anticiper mes tensions de cash.",
+      "screens": "Vue graphique 12 mois -> tableau encaissements / décaissements -> drill-down par nature (charges opérationnelles, structure, etc.).",
+      "objectif": "Je lis en quelques secondes où se situe mon risque cash sur les 12 mois à venir.",
+      "criteria": [
+        "Le graphique 12 mois est lisible en un coup d'œil",
+        "Les encaissements / décaissements sont bien distingués",
+        "Balance et BFR sont compréhensibles sans être expert-comptable",
+        "Le drill-down par nature de charge fonctionne",
+        "Le lien graphique <-> tableau est cohérent"
+      ]
+    },
+    {
+      "id": "A6",
+      "section": "agriculteur",
+      "title": "Trésorerie : gestion des factures",
+      "module": "Trésorerie > Factures",
+      "userStory": "En tant qu'agriculteur, je dépose mes factures en attente et je visualise leur statut pour fiabiliser mon prévisionnel.",
+      "screens": "Import / scan de factures -> lecture automatique -> tableau des factures par statut -> rattachement aux flux de trésorerie.",
+      "objectif": "Je sais quelles factures sont en attente, payées, ou à régler.",
+      "criteria": [
+        "Déposer / scanner une facture est simple",
+        "La lecture automatique du contenu est compréhensible",
+        "Les statuts (payée / impayée / en attente) sont clairs",
+        "Le lien facture -> flux de trésorerie est visible",
+        "Les erreurs de lecture sont signalées et corrigeables"
+      ]
+    },
+    {
+      "id": "A7",
+      "section": "agriculteur",
+      "title": "Trésorerie : flux bancaires",
+      "module": "Trésorerie > Catégorisation flux bancaires",
+      "userStory": "En tant qu'agriculteur, je catégorise mes flux bancaires remontés automatiquement pour obtenir un prévisionnel fiable.",
+      "screens": "Liste des transactions issues de la connexion bancaire -> catégorisation (suggérée / manuelle) -> impact sur le prévisionnel 12 mois.",
+      "objectif": "Je transforme rapidement une liste de flux bruts en prévisionnel exploitable.",
+      "criteria": [
+        "Le tableau de flux bancaires est lisible",
+        "Les catégories suggérées automatiquement me parlent",
+        "Catégoriser manuellement est rapide",
+        "L'impact sur le prévisionnel 12 mois est visible immédiatement",
+        "L'effort global de catégorisation est raisonnable"
+      ]
+    },
+    {
+      "id": "A8",
+      "section": "agriculteur",
+      "title": "Rentabilité : vue ateliers",
+      "module": "Rentabilité > Vue ateliers (campagne)",
+      "userStory": "En tant qu'agriculteur, j'accède à une vue globale de la rentabilité de tous mes ateliers pour repérer les sorties de route.",
+      "screens": "Vue synthétique marge brute / EBE / coût de revient par atelier -> comparaison prévisionnel vs réalisé -> alerte visuelle sur les écarts.",
+      "objectif": "Je repère instantanément l'atelier qui déraille.",
+      "criteria": [
+        "La vue globale des ateliers est lisible",
+        "L'atelier en difficulté ressort visuellement",
+        "Produit / charge / EBE / marge : le vocabulaire me parle",
+        "L'écart prévu / réalisé est visuellement évident",
+        "L'échelle des indicateurs est bien calibrée"
+      ]
+    },
+    {
+      "id": "A9",
+      "section": "agriculteur",
+      "title": "Rentabilité : focus atelier",
+      "module": "Rentabilité > Focus atelier",
+      "userStory": "En tant qu'agriculteur, je zoome sur un atelier pour comprendre où partent mes charges et où se situe ma marge.",
+      "screens": "Détail des charges opérationnelles / de structure -> split prévu / réalisé -> focus par poste (engrais, semences, carburant, phyto, MO).",
+      "objectif": "Je comprends précisément d'où vient l'écart sur l'atelier que j'ai sélectionné.",
+      "criteria": [
+        "Le zoom sur un atelier est immédiatement lisible",
+        "La décomposition par poste est claire",
+        "Le split prévu / réalisé par poste est explicite",
+        "Les ratios affichés sont pertinents pour agir",
+        "Je sais quelle décision prendre face à un dépassement"
+      ]
+    },
+    {
+      "id": "A10",
+      "section": "agriculteur",
+      "title": "Pluriannuel",
+      "module": "Pluriannuel",
+      "userStory": "En tant qu'agriculteur, je visualise ma trajectoire économique sur plusieurs exercices comptables pour préparer mes décisions structurantes.",
+      "screens": "Vue pluriannuelle graphique + tableau -> filtres par scénario (conjoncturel) et par projet (investissement) -> lecture EBE / BFR / trésorerie projetée.",
+      "objectif": "Je vois où me mènent mes choix structurants sur 6 à 8 ans.",
+      "criteria": [
+        "La vue pluriannuelle est lisible",
+        "L'exercice comptable est bien matérialisé",
+        "L'effet d'un scénario conjoncturel est visible",
+        "L'effet d'un projet d'investissement est visible",
+        "Les indicateurs clés (EBE, BFR, tréso projetée) sont clairs"
+      ]
+    },
+    {
+      "id": "A11",
+      "section": "agriculteur",
+      "title": "Stocks : gestion stocks & lots",
+      "module": "Stocks > Gestion stocks & lots",
+      "userStory": "En tant qu'agriculteur, je gère mes stocks et mes lots pour fiabiliser ma marge et ma trésorerie.",
+      "screens": "Vue inventaire valorisé -> fiches lots -> mouvements de stock -> impact sur les indicateurs de rentabilité.",
+      "objectif": "Je maintiens un inventaire fiable qui alimente ma rentabilité.",
+      "criteria": [
+        "Le modèle stock / lot est compréhensible",
+        "La valorisation est lisible",
+        "Les mouvements de stock sont traçables",
+        "L'impact stock -> rentabilité / trésorerie est visible",
+        "L'interface est applicable à la réalité d'une exploitation"
+      ]
+    },
+    {
+      "id": "A12",
+      "section": "agriculteur",
+      "title": "Stocks : import manuel ventes/achats",
+      "module": "Stocks > Import manuel vente / achat",
+      "userStory": "En tant qu'agriculteur, j'ajoute manuellement des ventes ou des achats pour maintenir mes stocks à jour.",
+      "screens": "Formulaire de saisie d'un achat / d'une vente -> affectation à un lot -> mise à jour du stock et des KPI associés.",
+      "objectif": "Je saisis en moins d'une minute une vente ou un achat hors flux auto.",
+      "criteria": [
+        "Le formulaire de saisie est clair et rapide",
+        "L'affectation à un lot est évidente",
+        "L'impact sur mes stocks est immédiat",
+        "Les KPI associés sont mis à jour visiblement",
+        "Le temps perçu pour une saisie est raisonnable"
+      ]
+    },
+    {
+      "id": "A13",
+      "section": "agriculteur",
+      "title": "Chat avec mon conseiller",
+      "module": "Chat agriculteur",
+      "userStory": "En tant qu'agriculteur, j'ouvre la boîte de dialogue pour échanger avec mon conseiller sans changer d'outil.",
+      "screens": "Ouverture du drawer chat depuis la home -> conversation 1-1 avec le conseiller -> envoi de messages, fichiers, mentions -> historique archivé.",
+      "objectif": "Je communique avec mon conseiller comme je le ferais sur WhatsApp, mais avec tout tracé et rattaché à mon dossier.",
+      "criteria": [
+        "Le chat est visible / accessible depuis la home",
+        "Le drawer est intuitif",
+        "L'envoi d'un message / fichier est simple",
+        "L'historique de conversation est lisible",
+        "La valeur vs SMS / WhatsApp / mail est perçue"
+      ]
+    },
+    {
+      "id": "C1",
+      "section": "conseiller",
+      "title": "Portefeuille client",
+      "module": "Portefeuille client",
+      "userStory": "En tant que conseiller, j'ouvre mon portefeuille, je segmente mes adhérents et je repère les dossiers à risque ou à fort potentiel de conseil.",
+      "screens": "Tableau portefeuille -> indicateurs clés par exploitation (CA, charges, EBE, EBE/CA, fraîcheur) -> tri / regroupement par production -> création de listes personnalisées.",
+      "objectif": "Je priorise mes rendez-vous de conseil en 2 minutes.",
+      "criteria": [
+        "Le tableau portefeuille est lisible en un coup d'œil",
+        "Les indicateurs clés proposés sont pertinents",
+        "Le tri / regroupement par production fonctionne intuitivement",
+        "Créer une liste / vue personnalisée est clair",
+        "Je peux prioriser mes rendez-vous à partir de cette vue"
+      ]
+    },
+    {
+      "id": "C2",
+      "section": "conseiller",
+      "title": "Fiche client : vue d'ensemble",
+      "module": "Fiche client > Vue d'ensemble",
+      "userStory": "En tant que conseiller, j'ouvre la fiche d'un adhérent et j'ai une lecture synthétique avant de descendre dans le détail.",
+      "screens": "Fiche client agrégée -> identité exploitation + indicateurs de tête -> accès aux sous-pages (tréso, pluriannuel, rentabilité, projets, itinéraires, stocks).",
+      "objectif": "En 30 secondes, je sais où sont les points d'attention chez cet adhérent.",
+      "criteria": [
+        "L'identité exploitation est claire",
+        "Les indicateurs de tête donnent une lecture rapide",
+        "Les sous-pages sont bien signalées et accessibles",
+        "La navigation interne à la fiche est fluide",
+        "Je sais où aller chercher quoi"
+      ]
+    },
+    {
+      "id": "C3",
+      "section": "conseiller",
+      "title": "Fiche client : trésorerie",
+      "module": "Fiche client > Trésorerie",
+      "userStory": "En tant que conseiller, j'ouvre la sous-page trésorerie de l'adhérent pour qualifier le risque cash et la trajectoire 12 mois.",
+      "screens": "Même affichage que côté agriculteur (graphique 12 mois + tableau + factures + catégorisation bancaire) -> lecture en mode conseiller.",
+      "objectif": "Je qualifie le risque cash en quelques secondes.",
+      "criteria": [
+        "L'affichage est cohérent avec la vue agriculteur",
+        "Le risque cash se qualifie rapidement",
+        "La trajectoire 12 mois est lisible",
+        "Les indicateurs (balance, BFR) sont exploitables",
+        "La lecture en mode conseiller apporte une vraie valeur"
+      ]
+    },
+    {
+      "id": "C4",
+      "section": "conseiller",
+      "title": "Fiche client : pluriannuel",
+      "module": "Fiche client > Pluriannuel",
+      "userStory": "En tant que conseiller, j'ouvre la sous-page pluriannuel pour lire la trajectoire économique sur plusieurs exercices.",
+      "screens": "Même affichage que côté agriculteur (graphique + tableau pluriannuel + filtres projets / scénarios) -> lecture sur plusieurs exercices.",
+      "objectif": "Je bâtis un conseil structurant en m'appuyant sur la trajectoire pluriannuelle.",
+      "criteria": [
+        "L'affichage est cohérent avec la vue agriculteur",
+        "La lecture pluriannuelle est claire",
+        "L'application d'un scénario / projet est évidente",
+        "Les exercices comptables sont bien matérialisés",
+        "Je peux bâtir un conseil structurant depuis cette vue"
+      ]
+    },
+    {
+      "id": "C5",
+      "section": "conseiller",
+      "title": "Fiche client : rentabilité",
+      "module": "Fiche client > Rentabilité (vs référentiel)",
+      "userStory": "En tant que conseiller, je situe la rentabilité des ateliers de l'adhérent vs mon portefeuille ou un autre référentiel que je choisis.",
+      "screens": "Vue rentabilité par atelier -> sélection du référentiel (mon portefeuille, liste filtrée, référentiel externe) -> lecture produits / charges / EBE / marge vs référentiel.",
+      "objectif": "Je sais quel atelier de cet adhérent challenger en priorité et pourquoi.",
+      "criteria": [
+        "Le positionnement vs référentiel est visible",
+        "Je peux changer de référentiel de comparaison facilement",
+        "Les écarts atelier par atelier sont évidents",
+        "Les indicateurs économiques parlent à mon métier",
+        "Je sais quel atelier challenger en priorité"
+      ]
+    },
+    {
+      "id": "C6",
+      "section": "conseiller",
+      "title": "Fiche client : projets",
+      "module": "Fiche client > Projets",
+      "userStory": "En tant que conseiller, je consulte les projets d'investissement de l'adhérent et j'en crée de nouveaux pour simuler des prévisionnels.",
+      "screens": "Liste des projets -> visualisation des prévisionnels associés -> création d'un nouveau projet (hypothèses, plan de financement, assolement) -> projection pluriannuelle + alertes.",
+      "objectif": "Je co-construis avec l'adhérent la meilleure trajectoire en comparant plusieurs projets.",
+      "criteria": [
+        "La liste des projets est claire",
+        "Créer un nouveau projet est intuitif",
+        "Les hypothèses (plan de financement, assolement) sont accessibles",
+        "Les prévisionnels générés sont lisibles",
+        "Je peux porter le projet en rendez-vous de conseil"
+      ]
+    },
+    {
+      "id": "C7",
+      "section": "conseiller",
+      "title": "Fiche client : itinéraires",
+      "module": "Fiche client > Itinéraires (vs portefeuille)",
+      "userStory": "En tant que conseiller, je compare les performances techniques de l'adhérent sur ses itinéraires culturaux et je les situe dans le portefeuille.",
+      "screens": "Liste des ITK de l'adhérent par culture -> détails techniques et économiques -> comparaison avec les ITK d'autres exploitations du portefeuille.",
+      "objectif": "J'identifie les leviers techniques par culture sur lesquels aller chercher de la marge.",
+      "criteria": [
+        "Les ITK de l'adhérent sont bien listés",
+        "Le comparatif avec d'autres exploitations est exploitable",
+        "Les indicateurs techniques sont pertinents",
+        "Les indicateurs économiques associés sont lisibles",
+        "Je peux bâtir un conseil agronomique à partir de là"
+      ]
+    },
+    {
+      "id": "C8",
+      "section": "conseiller",
+      "title": "Fiche client : stocks",
+      "module": "Fiche client > Stocks",
+      "userStory": "En tant que conseiller, j'ouvre la sous-page stocks de l'adhérent pour fiabiliser ma lecture de la marge et de la trésorerie.",
+      "screens": "Même affichage que côté agriculteur (inventaire valorisé, lots, mouvements) -> lecture en mode conseiller.",
+      "objectif": "Je qualifie un besoin de pilotage des stocks chez l'adhérent.",
+      "criteria": [
+        "L'affichage est cohérent avec la vue agriculteur",
+        "L'impact stock -> marge / trésorerie est lisible",
+        "Les lots sont traçables",
+        "Les mouvements sont lisibles",
+        "Je peux qualifier un besoin de pilotage stock"
+      ]
+    },
+    {
+      "id": "C9",
+      "section": "conseiller",
+      "title": "Data visualisation portefeuille",
+      "module": "Data visualisation portefeuille",
+      "userStory": "En tant que conseiller, je construis à la volée des graphiques sur mon portefeuille pour faire émerger des tendances et repérer les exploitations à risque.",
+      "screens": "Choix d'un type de graph (bar / line / distribution) -> choix de l'axe Y (indicateurs par défaut + custom) et axe X -> sélecteur de période -> scénario macro -> clic sur un point -> drawer exploitation -> fiche client.",
+      "objectif": "Je passe d'une observation macro à une action ciblée sur une exploitation en quelques clics.",
+      "criteria": [
+        "Le choix du type de graph est intuitif",
+        "Les indicateurs par défaut sont pertinents",
+        "Le sélecteur de période fonctionne bien",
+        "L'application d'un scénario macro est lisible",
+        "Je passe de la vue macro à la fiche exploitation en un clic"
+      ]
+    },
+    {
+      "id": "C10",
+      "section": "conseiller",
+      "title": "Chat conseiller",
+      "module": "Chat / boîte de dialogue conseiller",
+      "userStory": "En tant que conseiller, je centralise mes échanges avec mes adhérents dans TerraGrow pour tracer le conseil et garantir la continuité.",
+      "screens": "Accès au module chat (3 niveaux : cabinet / équipe / conversation) -> ouverture d'une conversation 1-1 ou groupe -> envoi messages, fichiers, mentions -> rattachement automatique au dossier client.",
+      "objectif": "Je retrouve tous mes échanges rattachés aux bons dossiers, même en cas de reprise par un collègue.",
+      "criteria": [
+        "Les 3 niveaux d'accès sont clairs",
+        "Ouvrir une conversation est intuitif",
+        "L'envoi de message / fichier / mention fonctionne",
+        "Le rattachement au dossier client est lisible",
+        "Je gagne du temps vs SMS / WhatsApp / mail"
+      ]
+    }
+  ]
+}

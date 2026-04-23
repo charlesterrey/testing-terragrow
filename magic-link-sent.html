@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraGrow — Lien envoyé</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tg-dark': '#021130',
+            'tg-dark-light': '#0a1f4a',
+            'tg-primary': '#2563eb',
+            'tg-primary-hover': '#1d4ed8',
+            'tg-success': '#1cc172',
+            'tg-warning': '#f59e0b',
+            'tg-danger': '#ef4444',
+            'tg-brand': '#074d43',
+            'backgroundPrimary': '#ffffff',
+            'backgroundSecondary': '#f8fafc',
+            'backgroundTertiary': '#f1f5f9',
+            'backgroundHover': '#e2e8f0',
+            'backgroundRed': '#fef2f2',
+            'backgroundAmber': '#fffbeb',
+            'backgroundLime': '#f7fee7',
+            'backgroundTeal': '#f0fdfa',
+            'backgroundBlue': '#eff6ff',
+            'backgroundZinc': '#f4f4f5',
+            'neutral-100': '#fcfcfc',
+            'neutral-200': '#efefef',
+            'neutral-300': '#e5e5e5',
+            'neutral-500': '#a7a7ae',
+            'neutral-600': '#707078',
+            'neutral-800': '#525259',
+            'neutral-900': '#2a2a2d',
+            'neutral-950': '#1d1e24',
+          },
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen bg-tg-dark flex items-center justify-center px-4 font-sans">
+  <div class="w-full max-w-sm text-center">
+
+    <!-- Spinner -->
+    <div class="mb-6 flex justify-center">
+      <div class="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+    </div>
+
+    <h1 class="text-lg font-semibold text-white mb-2">Lien d'accès envoyé</h1>
+
+    <p id="sent-email" class="hidden"></p>
+
+    <p class="text-white/60 text-sm leading-relaxed mb-6">
+      Le lien d'accès a été envoyé sur votre boîte mail.<br>
+      Si vous ne l'avez pas encore reçu, patientez quelques minutes et cliquez sur Renvoyer.
+    </p>
+
+    <button id="resend-btn"
+      class="text-white/70 hover:text-white text-sm underline transition-colors disabled:opacity-40 disabled:no-underline disabled:cursor-not-allowed">
+      Renvoyer
+    </button>
+
+    <p id="resend-msg" class="hidden text-tg-success text-sm mt-3"></p>
+
+    <p class="mt-10">
+      <a href="index.html" class="text-white/40 hover:text-white/60 text-xs underline transition-colors">Retour</a>
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

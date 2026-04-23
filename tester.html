@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraGrow — Fiche testeur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tg-dark': '#021130', 'tg-dark-light': '#0a1f4a', 'tg-primary': '#2563eb', 'tg-primary-hover': '#1d4ed8',
+            'tg-success': '#1cc172', 'tg-warning': '#f59e0b', 'tg-danger': '#ef4444', 'tg-brand': '#074d43',
+            'backgroundPrimary': '#ffffff', 'backgroundSecondary': '#f8fafc', 'backgroundTertiary': '#f1f5f9',
+            'backgroundHover': '#e2e8f0', 'backgroundRed': '#fef2f2', 'backgroundAmber': '#fffbeb',
+            'backgroundLime': '#f7fee7', 'backgroundTeal': '#f0fdfa', 'backgroundBlue': '#eff6ff', 'backgroundZinc': '#f4f4f5',
+            'neutral-100': '#fcfcfc', 'neutral-200': '#efefef', 'neutral-300': '#e5e5e5', 'neutral-500': '#a7a7ae',
+            'neutral-600': '#707078', 'neutral-800': '#525259', 'neutral-900': '#2a2a2d', 'neutral-950': '#1d1e24',
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .anim-gradient { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(37,99,235,0.04) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 60%, rgba(28,193,114,0.03) 0%, transparent 50%);
+      animation: gradientDrift 20s ease-in-out infinite alternate; }
+    @keyframes gradientDrift { 0%{transform:translate(0,0)} 33%{transform:translate(2%,-1%)} 66%{transform:translate(-1%,2%)} 100%{transform:translate(1%,-2%)} }
+    .page-content { opacity: 0; transform: translateY(4px); transition: opacity 350ms ease-out, transform 350ms ease-out; }
+    .page-content.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-neutral-950 antialiased" style="background:#fcfcfd">
+  <div class="fixed inset-0 -z-10 overflow-hidden"><div class="anim-gradient"></div></div>
+
+  <!-- TOP BAR -->
+  <div class="flex items-center justify-between px-8 py-3">
+    <a href="admin.html" class="flex items-center gap-1.5 text-xs font-medium text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-300 px-3 py-1.5 rounded-md transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+      Admin
+    </a>
+    <div class="flex items-center gap-2">
+      <a id="mail-link" href="#" class="flex items-center text-xs font-medium text-white bg-tg-primary hover:bg-tg-primary-hover h-6 px-3 rounded-md transition-colors">Envoyer un mail</a>
+      <img src="assets/logo.svg" alt="TerraGrow" class="h-6 w-6">
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading" class="flex items-center justify-center py-16">
+    <div class="w-8 h-8 border-2 border-neutral-200 border-t-tg-primary rounded-full animate-spin"></div>
+  </div>
+
+  <div id="page-content" class="page-content hidden px-8 pb-6">
+
+    <!-- HEADER -->
+    <div class="flex items-start justify-between mb-5">
+      <div>
+        <h1 id="tester-name" class="text-xl font-semibold text-neutral-950 tracking-tight mb-0.5"></h1>
+        <p id="tester-meta" class="text-sm text-neutral-500"></p>
+        <div class="flex items-center gap-3 mt-1 text-[11px] text-neutral-500">
+          <span id="tester-email"></span>
+          <span>·</span>
+          <span id="tester-created"></span>
+          <span>·</span>
+          <span id="tester-active"></span>
+        </div>
+      </div>
+      <div class="text-right">
+        <p id="tester-progress" class="text-2xl font-semibold text-tg-primary tracking-tight"></p>
+        <p class="text-[10px] text-neutral-500 mt-0.5">journeys complétées</p>
+        <div class="w-32 h-[6px] rounded bg-neutral-200 mt-2"><div id="tester-bar" class="h-[6px] rounded bg-tg-success" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- JOURNEY TABLE -->
+    <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden mb-5">
+      <div class="px-4 py-3 border-b border-neutral-200 flex items-center justify-between">
+        <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider">Résultats par journey</p>
+        <div class="flex items-center gap-2">
+          <input id="tester-table-search" type="text" placeholder="Rechercher..." class="text-[11px] px-2 py-1 border border-neutral-200 rounded text-neutral-950 placeholder-neutral-400 focus:outline-none focus:border-tg-primary w-36">
+          <select id="tester-table-filter" class="text-[11px] px-2 py-1 border border-neutral-200 rounded text-neutral-950 focus:outline-none focus:border-tg-primary">
+            <option value="all">Tous</option>
+            <option value="done">Parcouru</option>
+            <option value="partial">En cours</option>
+            <option value="todo">Non commencé</option>
+          </select>
+        </div>
+      </div>
+      <table class="w-full text-[11px]">
+        <thead>
+          <tr class="border-b border-neutral-200 bg-backgroundTertiary">
+            <th class="tester-sort px-3 py-2 text-left font-semibold text-neutral-500 uppercase tracking-wider cursor-pointer hover:text-neutral-800" data-sort="id">ID ↕</th>
+            <th class="tester-sort px-3 py-2 text-left font-semibold text-neutral-500 uppercase tracking-wider cursor-pointer hover:text-neutral-800" data-sort="title">Journey ↕</th>
+            <th class="px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider">Nav.</th>
+            <th class="px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider">Comp.</th>
+            <th class="px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider">Perf.</th>
+            <th class="px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider">Fonc.</th>
+            <th class="px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider">Des.</th>
+            <th class="tester-sort px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider cursor-pointer hover:text-neutral-800" data-sort="note">Note ↕</th>
+            <th class="tester-sort px-3 py-2 text-center font-semibold text-neutral-500 uppercase tracking-wider cursor-pointer hover:text-neutral-800" data-sort="status">Statut ↕</th>
+          </tr>
+        </thead>
+        <tbody id="results-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- VERBATIMS + SUGGESTIONS -->
+    <div class="bg-white rounded-lg border border-neutral-200 p-4">
+      <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-3">Verbatims et suggestions</p>
+      <div id="comments-section" class="space-y-2"></div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/tester.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraGrow — Inscription</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tg-dark': '#021130', 'tg-primary': '#2563eb', 'tg-primary-hover': '#1d4ed8',
+            'tg-success': '#1cc172', 'tg-warning': '#f59e0b', 'tg-danger': '#ef4444', 'tg-brand': '#074d43',
+            'backgroundTertiary': '#f1f5f9', 'backgroundHover': '#e2e8f0',
+            'neutral-200': '#efefef', 'neutral-300': '#e5e5e5', 'neutral-500': '#a7a7ae',
+            'neutral-600': '#707078', 'neutral-800': '#525259', 'neutral-900': '#2a2a2d', 'neutral-950': '#1d1e24',
+          },
+          fontFamily: { 'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen bg-tg-dark flex flex-col items-center justify-center px-4 py-10 font-sans antialiased">
+
+  <!-- Card -->
+  <div class="w-full max-w-[420px] bg-white rounded-xl shadow-lg px-8 py-8">
+
+    <!-- Logo -->
+    <div class="mb-6">
+      <img src="assets/logo.svg" alt="TerraGrow" class="h-8 w-8">
+    </div>
+
+    <!-- Title -->
+    <h1 class="text-[22px] font-semibold text-neutral-950 leading-snug tracking-tight mb-2">
+      <span class="text-tg-primary">Inscrivez-vous</span> pour accéder à votre espace de test TerraGrow.
+    </h1>
+    <p class="text-sm text-neutral-500 mb-6">Créez votre profil testeur en quelques secondes.</p>
+
+    <!-- Form -->
+    <form id="register-form" class="space-y-4">
+
+      <!-- Nom + Prénom on 2 cols -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="last_name" class="block text-[13px] font-medium text-neutral-950 mb-1">Nom</label>
+          <input type="text" id="last_name" name="last_name" required placeholder="Dupont"
+            class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+        </div>
+        <div>
+          <label for="first_name" class="block text-[13px] font-medium text-neutral-950 mb-1">Prénom</label>
+          <input type="text" id="first_name" name="first_name" required placeholder="Jean"
+            class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-[13px] font-medium text-neutral-950 mb-1">Adresse e-mail</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+          </span>
+          <input type="email" id="email" name="email" required placeholder="prenom.nom@entreprise.fr"
+            class="w-full bg-white border border-neutral-300 rounded-lg pl-9 pr-4 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- Téléphone + Entreprise on 2 cols -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="phone" class="block text-[13px] font-medium text-neutral-950 mb-1">Téléphone</label>
+          <input type="tel" id="phone" name="phone" placeholder="+33 6 12 34 56 78"
+            class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+        </div>
+        <div>
+          <label for="company" class="block text-[13px] font-medium text-neutral-950 mb-1">Entreprise</label>
+          <input type="text" id="company" name="company" required placeholder="CFG Alsace"
+            class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- Fonctions -->
+      <div>
+        <label for="job_title" class="block text-[13px] font-medium text-neutral-950 mb-1">Fonctions</label>
+        <input type="text" id="job_title" name="job_title" required placeholder="Conseiller de gestion"
+          class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-[13px] text-neutral-950 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-tg-primary/20 focus:border-tg-primary transition-colors">
+      </div>
+
+      <!-- Error -->
+      <div id="register-error" class="hidden text-red-500 text-[13px] text-center"></div>
+
+      <!-- Submit -->
+      <button type="submit" id="register-submit"
+        class="w-full py-2.5 px-4 bg-tg-dark hover:bg-tg-dark/85 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-tg-dark focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed text-[13px]">
+        Recevoir le lien d'accès
+      </button>
+
+      <!-- Separator -->
+      <div class="flex items-center gap-3">
+        <div class="flex-1 h-px bg-neutral-200"></div>
+        <span class="text-[11px] text-neutral-500">ou</span>
+        <div class="flex-1 h-px bg-neutral-200"></div>
+      </div>
+
+      <!-- Secondary -->
+      <a href="index.html" class="block w-full py-2.5 px-4 bg-white text-neutral-800 font-medium rounded-lg border border-neutral-200 text-center text-[13px] hover:bg-backgroundTertiary transition-colors">
+        Déjà inscrit ? Connexion
+      </a>
+    </form>
+  </div>
+
+  <!-- Wordmark -->
+  <p class="mt-8 text-[11px] text-white/25 tracking-wider">TerraGrow</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraGrow — Récapitulatif</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'tg-dark': '#021130',
+            'tg-dark-light': '#0a1f4a',
+            'tg-primary': '#2563eb',
+            'tg-primary-hover': '#1d4ed8',
+            'tg-success': '#1cc172',
+            'tg-warning': '#f59e0b',
+            'tg-danger': '#ef4444',
+            'tg-brand': '#074d43',
+            'backgroundPrimary': '#ffffff',
+            'backgroundSecondary': '#f8fafc',
+            'backgroundTertiary': '#f1f5f9',
+            'backgroundHover': '#e2e8f0',
+            'backgroundRed': '#fef2f2',
+            'backgroundAmber': '#fffbeb',
+            'backgroundLime': '#f7fee7',
+            'backgroundTeal': '#f0fdfa',
+            'backgroundBlue': '#eff6ff',
+            'backgroundZinc': '#f4f4f5',
+            'neutral-100': '#fcfcfc',
+            'neutral-200': '#efefef',
+            'neutral-300': '#e5e5e5',
+            'neutral-500': '#a7a7ae',
+            'neutral-600': '#707078',
+            'neutral-800': '#525259',
+            'neutral-900': '#2a2a2d',
+            'neutral-950': '#1d1e24',
+          },
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .anim-gradient {
+      position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(37,99,235,0.04) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 60%, rgba(28,193,114,0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.03) 0%, transparent 40%);
+      animation: gradientDrift 20s ease-in-out infinite alternate;
+    }
+    @keyframes gradientDrift {
+      0% { transform: translate(0, 0); }
+      33% { transform: translate(2%, -1%); }
+      66% { transform: translate(-1%, 2%); }
+      100% { transform: translate(1%, -2%); }
+    }
+
+    /* A4 page simulation */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: white;
+      border-radius: 3px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    @media print {
+      .no-print, .anim-gradient { display: none !important; }
+      body { background: white !important; padding: 0 !important; margin: 0 !important; }
+      .a4-page { box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; width: 100% !important; min-height: auto !important; padding: 4mm 8mm !important; }
+      .a4-page + .a4-page { page-break-before: always; }
+      .pages-wrapper { display: block !important; padding: 0 !important; gap: 0 !important; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      tr { page-break-inside: avoid; }
+    }
+
+    @page { size: A4 portrait; margin: 6mm 8mm; }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-neutral-950 antialiased" style="background:#eaecf0">
+
+  <!-- Animated gradient background -->
+  <div class="fixed inset-0 -z-10 overflow-hidden no-print">
+    <div class="anim-gradient"></div>
+  </div>
+
+  <!-- TOP BAR (floating, not printed) -->
+  <div class="no-print sticky top-0 z-50 flex items-center justify-between px-8 py-2.5 bg-white/80 backdrop-blur-sm border-b border-neutral-200">
+    <div class="flex items-center gap-2">
+      <img src="assets/logo.svg" alt="TerraGrow" class="h-6 w-6">
+      <span class="text-sm font-semibold text-neutral-950">Récapitulatif</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="dashboard.html" class="flex items-center gap-1.5 text-xs font-medium text-neutral-600 hover:text-neutral-950 border border-neutral-200 hover:border-neutral-300 px-3 py-1.5 rounded-md transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        Dashboard
+      </a>
+      <button id="print-btn" class="text-xs font-medium text-white bg-tg-dark hover:bg-tg-dark/80 px-4 py-1.5 rounded-md transition-colors">
+        Imprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- A4 PAGES -->
+  <div class="pages-wrapper flex flex-col items-center gap-8 py-8">
+
+    <!-- PAGE 1: Header + Charts + Tableau -->
+    <div class="a4-page px-12 py-8 flex flex-col">
+
+      <!-- HEADER -->
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <img src="assets/logo.svg" alt="TerraGrow" class="h-8 w-8 mb-3">
+          <h1 id="user-fullname" class="text-2xl font-semibold text-neutral-950 tracking-tight mb-0.5"></h1>
+          <p id="user-job" class="text-sm text-neutral-500 mb-0.5"></p>
+          <p id="completion-date" class="text-xs text-neutral-400"></p>
+        </div>
+        <div class="text-right">
+          <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-3">Résultats testing</p>
+          <div class="flex items-center gap-6">
+            <div class="text-center">
+              <p id="stat-journeys" class="text-3xl font-semibold text-tg-primary tracking-tight">—</p>
+              <p class="text-[10px] text-neutral-500 mt-0.5">journeys</p>
+            </div>
+            <div class="text-center">
+              <p id="stat-note" class="text-3xl font-semibold text-tg-success tracking-tight">—</p>
+              <p class="text-[10px] text-neutral-500 mt-0.5">note moy. /5</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-neutral-200 mb-4"></div>
+
+      <!-- CHARTS — side by side -->
+      <div class="grid grid-cols-2 gap-6 mb-4">
+
+        <!-- Criteria distribution -->
+        <div>
+          <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-3">Répartition des critères</p>
+          <div id="criteria-chart" class="space-y-1.5"></div>
+          <div class="flex items-center gap-4 mt-3">
+            <span class="flex items-center gap-1 text-[10px] text-neutral-500"><span class="w-2 h-2 rounded-sm" style="background:#1cc172"></span>OK</span>
+            <span class="flex items-center gap-1 text-[10px] text-neutral-500"><span class="w-2 h-2 rounded-sm" style="background:#f59e0b"></span>À améliorer</span>
+            <span class="flex items-center gap-1 text-[10px] text-neutral-500"><span class="w-2 h-2 rounded-sm" style="background:#e57373"></span>Bloquant</span>
+          </div>
+        </div>
+
+        <!-- Note histogram -->
+        <div>
+          <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-3">Distribution des notes</p>
+          <div id="note-histogram" class="flex items-end justify-between gap-2" style="height:90px"></div>
+          <div class="flex justify-between mt-1.5">
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">0</span>
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">1</span>
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">2</span>
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">3</span>
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">4</span>
+            <span class="text-[10px] text-neutral-400 flex-1 text-center">5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-neutral-200 mb-6"></div>
+
+      <!-- RESULTS TABLE -->
+      <div class="mb-4">
+        <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-3">Résultats détaillés</p>
+        <table class="w-full text-[10px]">
+          <thead>
+            <tr class="border-b border-neutral-200">
+              <th class="text-left font-semibold text-neutral-500 pb-2 pr-2">ID</th>
+              <th class="text-left font-semibold text-neutral-500 pb-2 pr-2">Journey</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-1" title="Navigation">Nav.</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-1" title="Compréhension">Comp.</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-1" title="Performance">Perf.</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-1" title="Fonctionnel">Fonc.</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-1" title="Design">Des.</th>
+              <th class="text-center font-semibold text-neutral-500 pb-2 px-2">Note</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- FOOTER page 1 -->
+      <div class="border-t border-neutral-200 pt-3 mt-auto flex items-center justify-between">
+        <p class="text-[10px] text-neutral-400">Page 1/2</p>
+        <div class="flex items-center gap-1.5">
+          <img src="assets/logo.svg" alt="TerraGrow" class="h-4 w-4 opacity-40">
+          <span class="text-[10px] text-neutral-400">TerraGrow</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAGE 2: Commentaires -->
+    <div class="a4-page px-14 py-10 flex flex-col">
+
+      <!-- Header page 2 -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-1">Verbatims et suggestions</p>
+          <p id="user-fullname-p2" class="text-sm font-medium text-neutral-950"></p>
+        </div>
+        <img src="assets/logo.svg" alt="TerraGrow" class="h-6 w-6 opacity-40">
+      </div>
+
+      <div class="border-t border-neutral-200 mb-4"></div>
+
+      <!-- Comments -->
+      <div id="comments-section" class="space-y-2 flex-1"></div>
+
+      <!-- FOOTER page 2 -->
+      <div class="border-t border-neutral-200 pt-3 mt-auto flex items-center justify-between">
+        <p id="footer-date" class="text-[10px] text-neutral-400"></p>
+        <p class="text-[10px] text-neutral-400">Page 2/2</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/recap.js"></script>
+</body>
+</html>

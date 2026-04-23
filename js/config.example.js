@@ -1,0 +1,3 @@
+// Supabase credentials — copy this file to config.js and fill in your values
+var SUPABASE_URL = 'YOUR_SUPABASE_URL';
+var SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
