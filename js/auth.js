@@ -29,7 +29,7 @@ if (currentPage === 'index.html') {
       try {
         const { error } = await supabase.auth.signInWithOtp({
           email,
-          options: { emailRedirectTo: window.location.origin + '/dashboard.html' },
+          options: { emailRedirectTo: window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'dashboard.html' },
         });
 
         if (error) {
@@ -86,7 +86,7 @@ if (currentPage === 'register.html') {
           email,
           options: {
             data: { first_name: firstName, last_name: lastName },
-            emailRedirectTo: window.location.origin + '/dashboard.html',
+            emailRedirectTo: window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'dashboard.html',
           },
         });
 
@@ -131,7 +131,7 @@ if (currentPage === 'magic-link-sent.html') {
       try {
         const { error } = await supabase.auth.signInWithOtp({
           email,
-          options: { emailRedirectTo: window.location.origin + '/dashboard.html' },
+          options: { emailRedirectTo: window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'dashboard.html' },
         });
 
         if (error) {
