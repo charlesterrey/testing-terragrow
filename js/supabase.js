@@ -1,7 +1,7 @@
 // Supabase Client Init — credentials loaded from config.js (not committed)
 // SUPABASE_URL and SUPABASE_ANON_KEY are defined in js/config.js
 
-const _isSupabaseReady = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
+var _isSupabaseReady = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
 
 // Create client — use "sbClient" to avoid collision with window.supabase (the SDK)
 var sbClient;
