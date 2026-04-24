@@ -27,7 +27,13 @@
       } catch (e) { console.error(e); }
     }
     profile = await getProfile(user.id);
-    if (!profile || !profile.first_name) { window.location.href = 'register.html?complete=1'; return; }
+    if ((!profile || !profile.first_name) && !sessionStorage.getItem('tg_complete_redirect')) {
+      sessionStorage.setItem('tg_complete_redirect', '1');
+      window.location.href = 'register.html?complete=1';
+      return;
+    }
+    // Clear redirect flag on successful profile load
+    if (profile && profile.first_name) sessionStorage.removeItem('tg_complete_redirect');
     var result = await supabase.from('feedbacks').select('*').order('journey_id', { ascending: true });
     feedbacks = result.data || [];
   } else {
