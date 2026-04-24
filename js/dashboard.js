@@ -27,7 +27,7 @@
       } catch (e) { console.error(e); }
     }
     profile = await getProfile(user.id);
-    if (!profile) { window.location.href = 'register.html'; return; }
+    if (!profile || !profile.first_name) { window.location.href = 'register.html?complete=1'; return; }
     var result = await supabase.from('feedbacks').select('*').order('journey_id', { ascending: true });
     feedbacks = result.data || [];
   } else {

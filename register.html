@@ -37,10 +37,16 @@
     </div>
 
     <!-- Title -->
-    <h1 class="text-[22px] font-semibold text-neutral-950 leading-snug tracking-tight mb-2">
+    <h1 id="register-title" class="text-[22px] font-semibold text-neutral-950 leading-snug tracking-tight mb-2">
       <span class="text-tg-primary">Inscrivez-vous</span> pour accéder à votre espace de test TerraGrow.
     </h1>
-    <p class="text-sm text-neutral-500 mb-6">Créez votre profil testeur en quelques secondes.</p>
+    <p id="register-subtitle" class="text-sm text-neutral-500 mb-6">Créez votre profil testeur en quelques secondes.</p>
+    <script>
+      if (window.location.search.includes('complete=1')) {
+        document.getElementById('register-title').innerHTML = '<span class="text-tg-primary">Complétez votre profil</span> pour accéder à votre espace de test.';
+        document.getElementById('register-subtitle').textContent = 'Renseignez vos informations pour personnaliser votre expérience.';
+      }
+    </script>
 
     <!-- Form -->
     <form id="register-form" class="space-y-4">

@@ -26,8 +26,9 @@ if (window.location.hash && window.location.hash.includes('access_token')) {
   }, 500);
 }
 
-// Non-blocking: redirect if already logged in
-if (currentPage === 'index.html' || currentPage === 'register.html') {
+// Non-blocking: redirect if already logged in (but not if completing profile)
+var isCompleting = currentPage === 'register.html' && window.location.search.includes('complete=1');
+if ((currentPage === 'index.html' || currentPage === 'register.html') && !isCompleting) {
   getSession().then(function(s) { if (s) window.location.href = 'dashboard.html'; }).catch(function() {});
 }
 
@@ -57,6 +58,28 @@ if (currentPage === 'index.html') {
 if (currentPage === 'register.html') {
   var regForm = document.getElementById('register-form');
   if (regForm) {
+    // If completing profile (already logged in), pre-fill email and hide it
+    if (isCompleting) {
+      getSession().then(function(s) {
+        if (s && s.user) {
+          var emailInput = document.getElementById('email');
+          emailInput.value = s.user.email;
+          emailInput.readOnly = true;
+          emailInput.style.opacity = '0.6';
+          var submitBtn = document.getElementById('register-submit');
+          if (submitBtn) submitBtn.textContent = 'Enregistrer mon profil';
+          // Hide the "already registered" link
+          var secondaryLink = regForm.querySelector('a[href="index.html"]');
+          if (secondaryLink && secondaryLink.parentElement) {
+            secondaryLink.parentElement.style.display = 'none';
+            // Also hide the separator above it
+            var sep = secondaryLink.parentElement.previousElementSibling;
+            if (sep) sep.style.display = 'none';
+          }
+        }
+      });
+    }
+
     regForm.addEventListener('submit', function(e) {
       e.preventDefault();
       var err = document.getElementById('register-error');
@@ -70,6 +93,40 @@ if (currentPage === 'register.html') {
       var jobTitle = document.getElementById('job_title').value.trim();
       if (!email || !firstName || !lastName) { err.textContent = 'Veuillez remplir le nom, le prénom et l\'email.'; err.classList.remove('hidden'); return; }
       btn.disabled = true;
+
+      // If already logged in (completing profile), save directly
+      if (isCompleting) {
+        btn.textContent = 'Enregistrement...';
+        getSession().then(function(s) {
+          if (!s) { window.location.href = 'index.html'; return; }
+          return supabase.from('profiles').upsert({
+            id: s.user.id,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone || null,
+            company: company || null,
+            job_title: jobTitle || null
+          }, { onConflict: 'id' }).then(function(res) {
+            if (res.error) {
+              err.textContent = 'Erreur : ' + res.error.message;
+              err.classList.remove('hidden');
+              btn.disabled = false;
+              btn.textContent = 'Enregistrer mon profil';
+            } else {
+              window.location.href = 'dashboard.html';
+            }
+          });
+        }).catch(function() {
+          err.textContent = 'Erreur réseau. Réessayez.';
+          err.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Enregistrer mon profil';
+        });
+        return;
+      }
+
+      // Normal registration flow (not yet logged in)
       btn.textContent = 'Envoi en cours...';
       localStorage.setItem('pending_profile', JSON.stringify({ first_name: firstName, last_name: lastName, email: email, phone: phone || null, company: company || null, job_title: jobTitle || null }));
 
