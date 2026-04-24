@@ -35,7 +35,7 @@
   infoBtn.type = 'button';
   infoBtn.title = 'Voir la vidéo de démo';
   infoBtn.className = 'fixed z-[9998] flex items-center justify-center w-9 h-9 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-colors shadow-sm';
-  infoBtn.style.cssText = 'bottom:20px;right:20px;font-family:Inter,system-ui,sans-serif;';
+  infoBtn.style.cssText = 'bottom:20px;left:20px;font-family:Inter,system-ui,sans-serif;';
   infoBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"/></svg>';
   document.body.appendChild(infoBtn);
 
