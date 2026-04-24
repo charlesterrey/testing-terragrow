@@ -91,7 +91,7 @@
         var textClass = g.key === 'done' ? 'text-tg-success' : 'text-neutral-600 hover:text-neutral-900';
         var idClass = g.key === 'done' ? 'text-tg-success/60' : 'text-neutral-400';
 
-        link.className = 'sidebar-item flex items-center gap-2 px-4 py-1.5 text-xs transition-colors rounded-md mx-2 '
+        link.className = 'sidebar-item flex items-center gap-2 px-4 py-1.5 text-xs transition-colors rounded-lg mx-2 '
           + (isActive ? 'active font-semibold text-neutral-950' : textClass);
 
         link.innerHTML = '<span class="sidebar-status-icon flex-shrink-0 w-3 flex items-center justify-center">' + iconHtml + '</span>'
