@@ -3,6 +3,7 @@
   try {
   var isSupabaseConfigured = typeof _isSupabaseReady !== 'undefined' && _isSupabaseReady;
   var isPreview = window.location.search.includes('preview');
+  var ADMIN_TOKEN = 'TG-UAT-2026-CFG-a9x7Km3pQ';
   var user = null, profile = null, feedbacks = [], profiles = [];
 
   if (isSupabaseConfigured && !isPreview) {
@@ -10,7 +11,32 @@
     if (!session) return;
     user = session.user;
     profile = await getProfile(user.id);
-    if (!profile || profile.role !== 'admin') { window.location.href = 'dashboard.html'; return; }
+    if (!profile) { window.location.href = 'dashboard.html'; return; }
+
+    // Token gate — wait for correct code before loading data
+    var savedToken = sessionStorage.getItem('tg_admin_token');
+    if (savedToken !== ADMIN_TOKEN) {
+      var gate = document.getElementById('token-gate');
+      var input = document.getElementById('token-input');
+      var errEl = document.getElementById('token-error');
+      var submitBtn = document.getElementById('token-submit');
+      gate.classList.remove('hidden');
+
+      var tokenOk = await new Promise(function(resolve) {
+        function check() {
+          if (input.value === ADMIN_TOKEN) {
+            sessionStorage.setItem('tg_admin_token', ADMIN_TOKEN);
+            resolve(true);
+          } else {
+            errEl.classList.remove('hidden');
+            input.focus();
+          }
+        }
+        submitBtn.addEventListener('click', check);
+        input.addEventListener('keydown', function(e) { if (e.key === 'Enter') check(); });
+      });
+    }
+    document.getElementById('token-gate').style.display = 'none';
     var fbResult = await supabase.from('feedbacks').select('*');
     feedbacks = (fbResult.data || []);
     var prResult = await supabase.from('profiles').select('id, first_name, last_name, email, job_title, company, role, created_at, updated_at');

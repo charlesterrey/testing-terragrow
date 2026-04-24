@@ -34,7 +34,6 @@
   document.getElementById('user-meta').textContent = [profile.job_title, profile.company].filter(Boolean).join(' — ');
   var firstnameEl = document.getElementById('user-firstname');
   if (firstnameEl) firstnameEl.textContent = profile.first_name;
-  if (profile.role === 'admin') document.getElementById('admin-link').classList.remove('hidden');
 
   document.getElementById('logout-btn').addEventListener('click', async function() {
     if (isSupabaseConfigured) await supabase.auth.signOut();

@@ -105,7 +105,11 @@ if (currentPage === 'magic-link-sent.html') {
   }
 
   supabase.auth.onAuthStateChange(function(ev, sess) {
-    if (ev === 'SIGNED_IN' && sess) { handlePostSignIn(sess); window.location.href = 'dashboard.html'; }
+    if (ev === 'SIGNED_IN' && sess) {
+      handlePostSignIn(sess).then(function() {
+        window.location.href = 'dashboard.html';
+      });
+    }
   });
 }
 
@@ -116,10 +120,24 @@ supabase.auth.onAuthStateChange(function(ev, sess) {
 
 function handlePostSignIn(sess) {
   var pp = localStorage.getItem('pending_profile');
-  if (!pp) return;
+  if (!pp) return Promise.resolve();
   try {
     var p = JSON.parse(pp);
-    supabase.from('profiles').upsert({ id: sess.user.id, first_name: p.first_name, last_name: p.last_name, email: p.email, phone: p.phone, company: p.company, job_title: p.job_title }, { onConflict: 'id' });
-  } catch (e) { console.error(e); }
-  localStorage.removeItem('pending_profile');
+    return supabase.from('profiles').upsert({
+      id: sess.user.id,
+      first_name: p.first_name,
+      last_name: p.last_name,
+      email: p.email,
+      phone: p.phone,
+      company: p.company,
+      job_title: p.job_title
+    }, { onConflict: 'id' }).then(function(res) {
+      if (res.error) console.error('Profile upsert error:', res.error);
+      localStorage.removeItem('pending_profile');
+    });
+  } catch (e) {
+    console.error(e);
+    localStorage.removeItem('pending_profile');
+    return Promise.resolve();
+  }
 }
