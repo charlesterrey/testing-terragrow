@@ -8,6 +8,24 @@
     var session = await requireAuth();
     if (!session) return;
     user = session.user;
+    // Safety net: if pending_profile still in localStorage, retry the upsert
+    var pendingProfile = localStorage.getItem('pending_profile');
+    if (pendingProfile) {
+      try {
+        var pp = JSON.parse(pendingProfile);
+        var upsertRes = await supabase.from('profiles').upsert({
+          id: user.id,
+          first_name: pp.first_name,
+          last_name: pp.last_name,
+          email: pp.email,
+          phone: pp.phone,
+          company: pp.company,
+          job_title: pp.job_title
+        }, { onConflict: 'id' });
+        if (!upsertRes.error) localStorage.removeItem('pending_profile');
+        else console.error('Profile upsert retry error:', upsertRes.error);
+      } catch (e) { console.error(e); }
+    }
     profile = await getProfile(user.id);
     if (!profile) { window.location.href = 'register.html'; return; }
     var result = await supabase.from('feedbacks').select('*').order('journey_id', { ascending: true });
