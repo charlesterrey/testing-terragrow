@@ -16,11 +16,14 @@
 
     // Load tester profile
     var pr = await supabase.from('profiles').select('*').eq('id', testerId).single();
+    if (pr.error) console.error('[Tester] Profile query error:', pr.error);
     testerProfile = pr.data;
 
     // Load tester feedbacks
     var fb = await supabase.from('feedbacks').select('*').eq('user_id', testerId);
+    if (fb.error) console.error('[Tester] Feedbacks query error:', fb.error);
     feedbacks = fb.data || [];
+    console.log('[Tester] Feedbacks loaded:', feedbacks.length);
   } else {
     // Preview mock
     var mockProfiles = {
@@ -54,7 +57,8 @@
   feedbacks.forEach(function(f) { fbMap[f.journey_id] = f; });
 
   // Header
-  document.getElementById('tester-name').textContent = testerProfile.first_name + ' ' + testerProfile.last_name;
+  var testerDisplayName = (testerProfile.first_name && testerProfile.last_name) ? (testerProfile.first_name + ' ' + testerProfile.last_name) : (testerProfile.first_name || testerProfile.last_name || testerProfile.email || 'Sans nom');
+  document.getElementById('tester-name').textContent = testerDisplayName;
   document.getElementById('tester-meta').textContent = [testerProfile.job_title, testerProfile.company].filter(Boolean).join(' — ');
   document.getElementById('tester-email').textContent = testerProfile.email || '';
   document.getElementById('tester-created').textContent = 'Inscrit le ' + (testerProfile.created_at ? new Date(testerProfile.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '—');
@@ -82,7 +86,7 @@
   document.getElementById('tester-progress').textContent = completed + '/' + totalJourneys;
   document.getElementById('tester-bar').style.width = pct + '%';
   document.getElementById('mail-link').href = 'mailto:' + (testerProfile.email || '');
-  document.title = 'TerraGrow — ' + testerProfile.first_name + ' ' + testerProfile.last_name;
+  document.title = 'TerraGrow — ' + testerDisplayName;
 
   // Results table
   var tbody = document.getElementById('results-tbody');

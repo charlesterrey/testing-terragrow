@@ -38,9 +38,13 @@
     }
     document.getElementById('token-gate').style.display = 'none';
     var fbResult = await supabase.from('feedbacks').select('*');
+    if (fbResult.error) console.error('[Admin] Feedbacks query error:', fbResult.error);
     feedbacks = (fbResult.data || []);
+    console.log('[Admin] Feedbacks loaded:', feedbacks.length);
     var prResult = await supabase.from('profiles').select('id, first_name, last_name, email, job_title, company, role, created_at, updated_at');
+    if (prResult.error) console.error('[Admin] Profiles query error:', prResult.error);
     profiles = (prResult.data || []);
+    console.log('[Admin] Profiles loaded:', profiles.length);
   } else {
     profile = { first_name: 'Charles', last_name: 'TERREY', job_title: 'CEO', company: 'TerraGrow', role: 'admin' };
     feedbacks = [
@@ -128,9 +132,10 @@
   var testerRows = testers.map(function(t) {
     var completed = testerCompleted(t);
     var pct = Math.round((completed / totalJourneys) * 100);
+    var displayName = (t.first_name && t.last_name) ? (t.first_name + ' ' + t.last_name) : (t.first_name || t.last_name || t.email || 'Sans nom');
     return {
       id: t.id,
-      name: t.first_name + ' ' + t.last_name,
+      name: displayName,
       email: t.email || '',
       job: [t.job_title, t.company].filter(Boolean).join(' — '),
       created: t.created_at || '',
@@ -323,7 +328,7 @@
     var html = '';
     verbs.forEach(function(fb) {
       var p = profileMap[fb.user_id];
-      var name = p ? p.first_name + ' ' + p.last_name : 'Inconnu';
+      var name = p ? ((p.first_name && p.last_name) ? p.first_name + ' ' + p.last_name : (p.first_name || p.last_name || p.email || 'Inconnu')) : 'Inconnu';
       html += '<div class="flex items-start gap-2 py-1.5"><span class="text-[10px] font-medium text-neutral-950 flex-shrink-0 w-20">' + name + '</span><p class="text-[11px] text-neutral-600 italic">"' + fb.verbatim + '"</p></div>';
     });
 
@@ -393,7 +398,7 @@
     feedbacks.forEach(function(fb) {
       var p = profileMap[fb.user_id];
       var j = journeys.find(function(jj) { return jj.id === fb.journey_id; });
-      var name = p ? p.first_name + ' ' + p.last_name : 'Inconnu';
+      var name = p ? ((p.first_name && p.last_name) ? p.first_name + ' ' + p.last_name : (p.first_name || p.last_name || p.email || 'Inconnu')) : 'Inconnu';
       var email = p ? (p.email || '') : '';
       allRows.push([
         name, email, fb.journey_id, j ? j.title : '', j ? (j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller') : '',
