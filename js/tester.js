@@ -135,9 +135,124 @@
         '<td class="px-3 py-1.5 text-center">' + dot(fb ? fb.critere_design : null) + '</td>' +
         '<td class="px-3 py-1.5 text-center">' + noteHtml + '</td>' +
         '<td class="px-3 py-1.5 text-center">' + statusHtml + '</td>';
+      tr.style.cursor = 'pointer';
+      tr.addEventListener('click', (function(jId) { return function() { openDrawer(jId); }; })(j.id));
       tbody.appendChild(tr);
     });
   }
+
+  // --- DRAWER ---
+  function buildDrawerHTML(j, fb) {
+    var html = '<div class="flex items-center justify-between mb-4">';
+    html += '<div class="flex items-center gap-2">';
+    html += '<span class="font-mono text-xs text-neutral-400">' + j.id + '</span>';
+    html += '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full ' +
+      (j.section === 'agriculteur' ? 'bg-backgroundLime text-green-700' : 'bg-backgroundBlue text-blue-700') +
+      '">' + (j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller') + '</span>';
+    html += '</div>';
+    html += '<button id="drawer-close-btn" type="button" class="w-7 h-7 flex items-center justify-center rounded-lg border border-neutral-200 hover:bg-neutral-100 transition-colors">';
+    html += '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
+    html += '</button></div>';
+
+    html += '<h2 class="text-base font-semibold text-neutral-950 mb-4">' + j.title + '</h2>';
+
+    if (!fb) {
+      html += '<div class="text-center py-12"><p class="text-sm text-neutral-400">Pas encore de feedback</p></div>';
+      return html;
+    }
+
+    // Status badge
+    var statusLabel, statusClass;
+    if (fb.statut_realisation === 'termine') { statusLabel = 'Parcouru'; statusClass = 'bg-backgroundLime text-tg-success'; }
+    else if (fb.statut_realisation === 'en_cours') { statusLabel = 'En cours'; statusClass = 'bg-backgroundAmber text-amber-600'; }
+    else { statusLabel = 'Non commenc\u00e9'; statusClass = 'bg-backgroundZinc text-neutral-500'; }
+    html += '<div class="mb-5"><span class="text-[10px] font-medium px-2 py-1 rounded-full ' + statusClass + '">' + statusLabel + '</span></div>';
+
+    // Note /5
+    html += '<div class="mb-5">';
+    html += '<p class="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-2">Note globale</p>';
+    if (fb.note !== null && fb.note !== undefined) {
+      html += '<div class="flex items-center gap-1.5">';
+      for (var i = 1; i <= 5; i++) {
+        html += '<span class="w-6 h-6 rounded-full text-[10px] flex items-center justify-center font-semibold ' +
+          (i <= fb.note ? 'bg-tg-primary text-white' : 'bg-neutral-100 text-neutral-400') + '">' + i + '</span>';
+      }
+      html += '<span class="ml-2 text-sm font-semibold text-neutral-950">' + fb.note + '/5</span></div>';
+    } else {
+      html += '<span class="text-sm text-neutral-400">\u2014</span>';
+    }
+    html += '</div>';
+
+    // 5 criteria
+    var criteriaLabelsShort = ['Navigation', 'Compr\u00e9hension', 'Performance', 'Fonctionnel', 'Design'];
+    html += '<div class="mb-5">';
+    html += '<p class="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-2">Crit\u00e8res</p>';
+    html += '<div class="bg-backgroundSecondary rounded-lg border border-neutral-200 divide-y divide-neutral-200">';
+    criteriaFields.forEach(function(field, idx) {
+      var val = fb[field];
+      var label = (j.criteria && j.criteria[idx]) ? j.criteria[idx] : criteriaLabelsShort[idx];
+      var badgeHtml;
+      if (val === 'ok') badgeHtml = '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-backgroundLime text-tg-success">OK</span>';
+      else if (val === 'a_ameliorer') badgeHtml = '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-backgroundAmber text-amber-600">\u00c0 am\u00e9liorer</span>';
+      else if (val === 'bloquant') badgeHtml = '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-backgroundRed text-red-600">Bloquant</span>';
+      else badgeHtml = '<span class="text-[10px] text-neutral-400">\u2014</span>';
+      html += '<div class="flex items-start justify-between px-3 py-2">';
+      html += '<p class="text-[11px] text-neutral-700 pr-3 flex-1 leading-relaxed">' + label + '</p>';
+      html += badgeHtml + '</div>';
+    });
+    html += '</div></div>';
+
+    // Comment
+    if (fb.comment && fb.comment.trim()) {
+      html += '<div class="mb-4">';
+      html += '<p class="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">Commentaire</p>';
+      html += '<p class="text-[11px] text-neutral-700 leading-relaxed">' + fb.comment + '</p></div>';
+    }
+
+    // Verbatim
+    if (fb.verbatim && fb.verbatim.trim()) {
+      html += '<div class="mb-4">';
+      html += '<p class="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">Verbatim</p>';
+      html += '<p class="text-[11px] text-neutral-600 italic leading-relaxed">\u201c' + fb.verbatim + '\u201d</p></div>';
+    }
+
+    // Suggestion
+    if (fb.suggestion && fb.suggestion.trim()) {
+      html += '<div class="mb-4">';
+      html += '<p class="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">Suggestion</p>';
+      html += '<p class="text-[11px] text-tg-primary/80 leading-relaxed">\u2192 ' + fb.suggestion + '</p></div>';
+    }
+
+    return html;
+  }
+
+  function openDrawer(journeyId) {
+    var j = allJourneys.find(function(x) { return x.id === journeyId; });
+    if (!j) return;
+    var fb = fbMap[journeyId];
+    var content = document.getElementById('drawer-content');
+    var overlay = document.getElementById('drawer-overlay');
+    var panel = document.getElementById('drawer-panel');
+
+    content.innerHTML = buildDrawerHTML(j, fb);
+    overlay.style.display = 'block';
+    overlay.offsetHeight; // force reflow
+    overlay.classList.add('open');
+    panel.classList.add('open');
+
+    document.getElementById('drawer-close-btn').addEventListener('click', closeDrawer);
+  }
+
+  function closeDrawer() {
+    var overlay = document.getElementById('drawer-overlay');
+    var panel = document.getElementById('drawer-panel');
+    overlay.classList.remove('open');
+    panel.classList.remove('open');
+    setTimeout(function() { overlay.style.display = 'none'; }, 300);
+  }
+
+  document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrawer(); });
 
   renderTesterTable(journeyRows);
 

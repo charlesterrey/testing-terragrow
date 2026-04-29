@@ -35,6 +35,10 @@
     @keyframes gradientDrift { 0%{transform:translate(0,0)} 33%{transform:translate(2%,-1%)} 66%{transform:translate(-1%,2%)} 100%{transform:translate(1%,-2%)} }
     .page-content { opacity: 0; transform: translateY(4px); transition: opacity 350ms ease-out, transform 350ms ease-out; }
     .page-content.visible { opacity: 1; transform: translateY(0); }
+    .drawer-overlay { position:fixed; inset:0; z-index:9999; background:rgba(2,17,48,0.75); backdrop-filter:blur(4px); opacity:0; transition:opacity 300ms ease-out; display:none; }
+    .drawer-overlay.open { opacity:1; }
+    .drawer-panel { position:fixed; top:0; right:0; bottom:0; width:420px; max-width:90vw; background:#fff; box-shadow:-8px 0 30px rgba(0,0,0,0.12); transform:translateX(100%); transition:transform 300ms ease-out; z-index:10000; overflow-y:auto; }
+    .drawer-panel.open { transform:translateX(0); }
   </style>
 </head>
 <body class="min-h-screen font-sans text-neutral-950 antialiased" style="background:#fcfcfd">
@@ -117,6 +121,12 @@
       <div id="comments-section" class="space-y-2"></div>
     </div>
 
+  </div>
+
+  <!-- FEEDBACK DRAWER -->
+  <div id="drawer-overlay" class="drawer-overlay"></div>
+  <div id="drawer-panel" class="drawer-panel">
+    <div id="drawer-content" class="p-6"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
