@@ -51,12 +51,23 @@
     html, body { height: 100%; overflow: hidden; }
     .sidebar-item.active { background: #f1f5f9; }
     .sidebar-item:hover:not(.active) { background: #f8fafc; }
-    .sidebar-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+    .sidebar-scroll { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+    .sidebar-scroll:hover { scrollbar-color: rgba(0,0,0,0.12) transparent; }
     .sidebar-scroll::-webkit-scrollbar { width: 4px; }
     .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
-    .sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: transparent; border-radius: 2px; transition: background 300ms; }
+    .sidebar-scroll:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); }
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.22); }
     textarea { transition: border-color 150ms, box-shadow 150ms; }
     textarea:focus { border-color: #2563eb; outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.06); }
+
+    /* Resizable panels */
+    .panel-divider { width: 6px; cursor: col-resize; position: relative; flex-shrink: 0; z-index: 10; }
+    .panel-divider::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 3px; height: 32px; border-radius: 2px; background: #e5e5e5; transition: background 150ms, height 150ms; }
+    .panel-divider:hover::after, .panel-divider.dragging::after { background: #2563eb; height: 48px; }
+    .panel-right-collapsed .panel-divider { display: none; }
+    .panel-right-collapsed #right-panel { display: none; }
+    .panel-right-collapsed #left-panel { width: 100% !important; }
     .criteria-btn { transition: background 100ms, border-color 100ms, color 100ms; }
 
     /* Smooth content transition on page load */
@@ -144,30 +155,52 @@
       <div id="content-area" class="content-area flex-1 flex overflow-hidden">
 
         <!-- LEFT: context + criteria + note -->
-        <div class="w-[55%] flex flex-col px-6 py-5 overflow-hidden border-r border-neutral-100">
+        <div id="left-panel" class="flex flex-col pl-2 pr-0 py-3 overflow-hidden" style="width:60%">
+
+          <!-- Scrollable content -->
+          <div class="flex-1 overflow-y-auto min-h-0 sidebar-scroll px-4">
 
           <!-- Title + story -->
           <h1 id="test-title" class="text-lg font-semibold text-neutral-950 tracking-tight mb-1 flex-shrink-0"></h1>
-          <p id="test-userstory" class="text-sm text-neutral-500 leading-relaxed mb-4 flex-shrink-0"></p>
+          <p id="test-userstory" class="text-sm text-neutral-500 leading-relaxed mb-2 flex-shrink-0"></p>
 
           <!-- Objectif — prominent -->
-          <div class="flex-shrink-0 rounded-xl bg-gradient-to-br from-tg-primary/[0.04] to-tg-primary/[0.01] border border-tg-primary/10 px-5 py-3 mb-4">
+          <div class="flex-shrink-0 rounded-xl bg-gradient-to-br from-tg-primary/[0.04] to-tg-primary/[0.01] border border-tg-primary/10 px-4 py-2 mb-3">
             <p class="text-[10px] font-semibold text-tg-primary uppercase tracking-wider mb-1">Objectif de lisibilité</p>
             <p id="test-objectif" class="text-sm font-medium text-neutral-950 leading-snug"></p>
           </div>
 
+          <!-- Video de demonstration (collapsible) -->
+          <div id="video-section" class="flex-shrink-0 mb-3">
+            <button type="button" id="video-toggle" class="flex items-center gap-1.5 mb-2 group">
+              <svg id="video-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 text-neutral-400 group-hover:text-neutral-600 transition-transform duration-200" style="transform:rotate(90deg)"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+              <span class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider group-hover:text-tg-primary/80 transition-colors">Vidéo de démonstration</span>
+            </button>
+            <div id="video-body" class="overflow-hidden transition-all duration-250 ease-out">
+              <div class="rounded-xl border border-neutral-200 overflow-hidden relative">
+                <video id="journey-video" class="w-full block hidden" controls preload="metadata">
+                  Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                <div id="video-placeholder" class="w-full aspect-video flex flex-col items-center justify-center bg-neutral-100/80">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="w-10 h-10 text-neutral-300 mb-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                  </svg>
+                  <p class="text-xs text-neutral-400 font-medium">Vidéo à venir</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Note slider — minimal -->
-          <div class="flex-shrink-0 mb-5">
-            <div class="flex items-center justify-between mb-3">
+          <div class="flex-shrink-0 mb-3">
+            <div class="flex items-center justify-between mb-2">
               <span class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider">Note globale</span>
               <span id="note-display" class="text-sm font-semibold tracking-tight transition-all duration-500 ease-out" style="color:#d4d4d8">— /5</span>
             </div>
-            <div class="relative cursor-pointer" id="note-track-wrapper" style="padding:10px 0">
-              <!-- Track — Marcassin style: thick, rounded, soft fill -->
+            <div class="relative cursor-pointer" id="note-track-wrapper" style="padding:6px 0">
               <div class="h-[14px] rounded-full bg-neutral-200/60 border border-neutral-200/80 relative">
                 <div id="note-fill" class="absolute inset-y-0 left-0 rounded-full transition-all duration-500 ease-out" style="width:0%; background: linear-gradient(90deg, rgba(28,193,114,0.25), rgba(28,193,114,0.35))"></div>
               </div>
-              <!-- Clickable zones -->
               <div class="absolute inset-0 flex">
                 <button type="button" data-note="0" class="flex-1"></button>
                 <button type="button" data-note="1" class="flex-1"></button>
@@ -176,14 +209,12 @@
                 <button type="button" data-note="4" class="flex-1"></button>
                 <button type="button" data-note="5" class="flex-1"></button>
               </div>
-              <!-- Thumb — Marcassin style -->
               <div id="note-thumb" class="absolute top-1/2 -translate-y-1/2 pointer-events-none transition-all duration-500 ease-out" style="left:-14px">
                 <div class="w-[28px] h-[28px] rounded-[8px] bg-white border border-neutral-200 flex items-center justify-center transition-all duration-500 ease-out" id="note-thumb-inner" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)">
                   <span id="note-thumb-value" class="text-[10px] font-semibold text-neutral-400 transition-all duration-300">—</span>
                 </div>
               </div>
             </div>
-            <!-- Labels -->
             <div class="flex justify-between mt-1 px-0">
               <span class="note-label text-[10px] text-neutral-400 cursor-pointer transition-all duration-300" data-note="0">0</span>
               <span class="note-label text-[10px] text-neutral-400 cursor-pointer transition-all duration-300" data-note="1">1</span>
@@ -196,17 +227,27 @@
           </div>
 
           <!-- Criteria -->
-          <div class="flex-1 min-h-0 overflow-hidden">
-            <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-2.5">Critères d'évaluation</p>
-            <div class="space-y-2.5" id="criteria-container"></div>
+          <div class="flex-shrink-0">
+            <p class="text-[10px] font-semibold text-tg-primary/60 uppercase tracking-wider mb-2">Critères d'évaluation</p>
+            <div class="space-y-2" id="criteria-container"></div>
           </div>
+
+          </div><!-- end scrollable content -->
 
           <!-- Prev / Next nav -->
           <div id="journey-nav" class="flex-shrink-0 flex items-center justify-between pt-3 border-t border-neutral-200 mt-3"></div>
         </div>
 
+        <!-- Draggable divider -->
+        <div id="panel-divider" class="panel-divider"></div>
+
         <!-- RIGHT: ecrans + text fields -->
-        <div class="flex-1 flex flex-col px-6 py-5 overflow-hidden">
+        <div id="right-panel" class="flex-1 flex flex-col px-6 py-5 overflow-hidden relative">
+
+          <!-- Collapse button -->
+          <button id="collapse-right" type="button" title="Replier le panneau" class="absolute top-2 right-2 z-10 flex items-center justify-center w-6 h-6 rounded-md border border-neutral-200 bg-white text-neutral-400 hover:text-neutral-700 hover:border-neutral-300 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          </button>
 
           <!-- Écrans/flow -->
           <div class="flex-shrink-0 mb-4">
@@ -235,6 +276,12 @@
         </div>
       </div>
 
+      <!-- Expand button (visible when right panel collapsed) -->
+      <button id="expand-right" type="button" title="Ouvrir le panneau commentaires" class="hidden absolute top-2 right-2 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-neutral-200 bg-white text-neutral-500 hover:text-neutral-700 hover:border-neutral-300 transition-colors text-xs font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        Commentaires
+      </button>
+
       <!-- Floating save toast -->
       <div id="save-success" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
         <div class="flex items-center gap-2 bg-tg-success text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow-lg">
@@ -255,6 +302,72 @@
       if (topbar && sidebarHeader) {
         sidebarHeader.style.minHeight = topbar.offsetHeight + 'px';
       }
+
+      // --- Panel resize ---
+      var contentArea = document.getElementById('content-area');
+      var leftPanel = document.getElementById('left-panel');
+      var divider = document.getElementById('panel-divider');
+      var isDragging = false;
+
+      divider.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        isDragging = true;
+        divider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        var rect = contentArea.getBoundingClientRect();
+        var pct = ((e.clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(35, Math.min(85, pct));
+        leftPanel.style.width = pct + '%';
+      });
+
+      document.addEventListener('mouseup', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        divider.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      });
+
+      // --- Video toggle ---
+      var videoToggle = document.getElementById('video-toggle');
+      var videoBody = document.getElementById('video-body');
+      var videoChevron = document.getElementById('video-chevron');
+      var videoOpen = true;
+
+      videoToggle.addEventListener('click', function() {
+        videoOpen = !videoOpen;
+        if (videoOpen) {
+          videoBody.style.maxHeight = videoBody.scrollHeight + 'px';
+          videoChevron.style.transform = 'rotate(90deg)';
+          setTimeout(function() { videoBody.style.maxHeight = 'none'; }, 250);
+        } else {
+          videoBody.style.maxHeight = videoBody.scrollHeight + 'px';
+          videoBody.offsetHeight;
+          videoBody.style.maxHeight = '0px';
+          videoChevron.style.transform = 'rotate(0deg)';
+          var vid = document.getElementById('journey-video');
+          if (vid) vid.pause();
+        }
+      });
+
+      // --- Collapse / Expand right panel ---
+      var collapseBtn = document.getElementById('collapse-right');
+      var expandBtn = document.getElementById('expand-right');
+
+      collapseBtn.addEventListener('click', function() {
+        contentArea.classList.add('panel-right-collapsed');
+        expandBtn.classList.remove('hidden');
+      });
+
+      expandBtn.addEventListener('click', function() {
+        contentArea.classList.remove('panel-right-collapsed');
+        expandBtn.classList.add('hidden');
+      });
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
