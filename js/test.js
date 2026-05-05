@@ -270,6 +270,21 @@
     document.getElementById('test-screens').textContent = journey.screens;
     document.getElementById('test-objectif').textContent = journey.objectif;
 
+    // Video
+    var videoEl = document.getElementById('journey-video');
+    var videoPlaceholder = document.getElementById('video-placeholder');
+    if (journey.video) {
+      videoEl.src = journey.video;
+      videoEl.classList.remove('hidden');
+      videoPlaceholder.classList.add('hidden');
+    } else {
+      videoEl.pause();
+      videoEl.removeAttribute('src');
+      videoEl.load();
+      videoEl.classList.add('hidden');
+      videoPlaceholder.classList.remove('hidden');
+    }
+
     // Rebuild criteria
     var criteriaContainer = document.getElementById('criteria-container');
     criteriaContainer.innerHTML = '';

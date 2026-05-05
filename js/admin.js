@@ -13,6 +13,20 @@
     profile = await getProfile(user.id);
     if (!profile) { window.location.href = 'dashboard.html'; return; }
 
+    // Role check — block non-admins with a clear message
+    if (profile.role !== 'admin') {
+      document.getElementById('loading').classList.add('hidden');
+      var gate = document.getElementById('token-gate');
+      gate.innerHTML =
+        '<div class="flex flex-col items-center justify-center min-h-[60vh] gap-4">' +
+          '<svg class="w-12 h-12 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v.01M12 12a2 2 0 10-2-2m4 0a4 4 0 11-8 0 4 4 0 018 0zm-4 9a9 9 0 110-18 9 9 0 010 18z"/></svg>' +
+          '<p class="text-neutral-600 text-sm text-center max-w-xs">Accès réservé aux administrateurs.<br>Contactez Pierre pour obtenir les droits.</p>' +
+          '<a href="dashboard.html" class="text-sm font-medium text-tg-primary hover:underline">← Retour au dashboard</a>' +
+        '</div>';
+      gate.classList.remove('hidden');
+      return;
+    }
+
     // Token gate — wait for correct code before loading data
     var savedToken = sessionStorage.getItem('tg_admin_token');
     if (savedToken !== ADMIN_TOKEN) {
