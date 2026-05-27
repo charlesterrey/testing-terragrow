@@ -457,6 +457,7 @@ document.getElementById('export-excel').addEventListener('click', function() {
   XLSX.utils.book_append_sheet(wb, wsAll, 'Tous les feedbacks');
 
   // One sheet per tester
+  var usedSheetNames = {};
   d.testers.forEach(function(t) {
     var userFbs = d.feedbacksByUser[t.id] || [];
     if (userFbs.length === 0) return;
@@ -477,7 +478,10 @@ document.getElementById('export-excel').addEventListener('click', function() {
     });
     var ws = XLSX.utils.aoa_to_sheet(rows);
     ws['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 12 }, { wch: 40 }, { wch: 40 }, { wch: 40 }];
-    var sheetName = (t.first_name + ' ' + t.last_name).substring(0, 31);
+    var rawName = ((t.first_name || '') + ' ' + (t.last_name || '')).trim();
+    var sheetName = (rawName || t.email || 'Testeur ' + t.id.substring(0, 6)).substring(0, 31);
+    if (usedSheetNames[sheetName]) { sheetName = sheetName.substring(0, 28) + ' ' + (++usedSheetNames[sheetName]); }
+    else { usedSheetNames[sheetName] = 1; }
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
   });
 
