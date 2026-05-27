@@ -1,4 +1,6 @@
 // Admin synthesis page logic
+var _adminData = { feedbacks: [], profiles: [], journeys: [], testers: [], feedbacksByJourney: {}, feedbacksByUser: {}, profileMap: {}, criteriaFields: [] };
+
 (async function () {
   try {
   var isSupabaseConfigured = typeof _isSupabaseReady !== 'undefined' && _isSupabaseReady;
@@ -99,6 +101,15 @@
     if (!feedbacksByUser[fb.user_id]) feedbacksByUser[fb.user_id] = [];
     feedbacksByUser[fb.user_id].push(fb);
   });
+
+  // Store data for export (accessible outside try/catch)
+  _adminData.feedbacks = feedbacks;
+  _adminData.profiles = profiles;
+  _adminData.journeys = journeys;
+  _adminData.feedbacksByJourney = feedbacksByJourney;
+  _adminData.feedbacksByUser = feedbacksByUser;
+  _adminData.profileMap = profileMap;
+  _adminData.criteriaFields = criteriaFields;
 
   // KPIs
   var globalCompleted = 0, globalNotesSum = 0, globalNotesCount = 0, globalBlockers = 0, activeTesters = {};
@@ -374,91 +385,8 @@
     });
   }
 
-  // --- EXPORT EXCEL ---
-  document.getElementById('export-excel').addEventListener('click', function() {
-    if (typeof XLSX === 'undefined') { alert('Chargement en cours, réessayez.'); return; }
-    var wb = XLSX.utils.book_new();
-
-    var criteriaLabels = { critere_navigation: 'Navigation', critere_comprehension: 'Compréhension', critere_performance: 'Performance', critere_fonctionnel: 'Fonctionnel', critere_design: 'Design' };
-    var statusLabels = { ok: 'OK', a_ameliorer: 'À améliorer', bloquant: 'Bloquant' };
-
-    // --- Sheet 1: Synthèse globale ---
-    var globalRows = [['ID', 'Journey', 'Section', 'Nb feedbacks', 'Navigation OK', 'Navigation À amél.', 'Navigation Bloq.', 'Compréhension OK', 'Compréhension À amél.', 'Compréhension Bloq.', 'Performance OK', 'Performance À amél.', 'Performance Bloq.', 'Fonctionnel OK', 'Fonctionnel À amél.', 'Fonctionnel Bloq.', 'Design OK', 'Design À amél.', 'Design Bloq.', 'Note moyenne', 'Nb parcouru', 'Nb partiel']];
-
-    journeys.forEach(function(j) {
-      var fbs = feedbacksByJourney[j.id] || [];
-      var counts = {};
-      criteriaFields.forEach(function(f) { counts[f] = { ok: 0, a_ameliorer: 0, bloquant: 0 }; });
-      var noteS = 0, noteC = 0, parcouru = 0, partiel = 0;
-      fbs.forEach(function(fb) {
-        criteriaFields.forEach(function(f) { if (fb[f] && counts[f][fb[f]] !== undefined) counts[f][fb[f]]++; });
-        if (fb.statut_realisation === 'termine') parcouru++;
-        else if (fb.statut_realisation === 'en_cours' || fb.statut_realisation === 'bloque') partiel++;
-        if (fb.note !== null && fb.note !== undefined) { noteS += fb.note; noteC++; }
-      });
-      var row = [j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller', fbs.length];
-      criteriaFields.forEach(function(f) { row.push(counts[f].ok, counts[f].a_ameliorer, counts[f].bloquant); });
-      row.push(noteC > 0 ? Math.round(noteS / noteC * 10) / 10 : '', parcouru, partiel);
-      globalRows.push(row);
-    });
-
-    var wsGlobal = XLSX.utils.aoa_to_sheet(globalRows);
-    wsGlobal['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 12 }];
-    XLSX.utils.book_append_sheet(wb, wsGlobal, 'Synthèse');
-
-    // --- Sheet 2: Tous les feedbacks ---
-    var allRows = [['Testeur', 'Email', 'Journey ID', 'Journey', 'Section', 'Navigation', 'Compréhension', 'Performance', 'Fonctionnel', 'Design', 'Note /5', 'Statut', 'Commentaire', 'Verbatim', 'Suggestion']];
-
-    feedbacks.forEach(function(fb) {
-      var p = profileMap[fb.user_id];
-      var j = journeys.find(function(jj) { return jj.id === fb.journey_id; });
-      var name = p ? ((p.first_name && p.last_name) ? p.first_name + ' ' + p.last_name : (p.first_name || p.last_name || p.email || 'Inconnu')) : 'Inconnu';
-      var email = p ? (p.email || '') : '';
-      allRows.push([
-        name, email, fb.journey_id, j ? j.title : '', j ? (j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller') : '',
-        statusLabels[fb.critere_navigation] || '', statusLabels[fb.critere_comprehension] || '', statusLabels[fb.critere_performance] || '',
-        statusLabels[fb.critere_fonctionnel] || '', statusLabels[fb.critere_design] || '',
-        fb.note !== null && fb.note !== undefined ? fb.note : '', fb.statut_realisation || '',
-        fb.comment || '', fb.verbatim || '', fb.suggestion || ''
-      ]);
-    });
-
-    var wsAll = XLSX.utils.aoa_to_sheet(allRows);
-    wsAll['!cols'] = [{ wch: 20 }, { wch: 25 }, { wch: 5 }, { wch: 35 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 12 }, { wch: 40 }, { wch: 40 }, { wch: 40 }];
-    XLSX.utils.book_append_sheet(wb, wsAll, 'Tous les feedbacks');
-
-    // --- One sheet per tester ---
-    testers.forEach(function(t) {
-      var userFbs = feedbacksByUser[t.id] || [];
-      if (userFbs.length === 0) return;
-      var rows = [['Journey ID', 'Journey', 'Section', 'Navigation', 'Compréhension', 'Performance', 'Fonctionnel', 'Design', 'Note /5', 'Statut', 'Commentaire', 'Verbatim', 'Suggestion']];
-
-      journeys.forEach(function(j) {
-        var fb = userFbs.find(function(f) { return f.journey_id === j.id; });
-        if (!fb) {
-          rows.push([j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller', '', '', '', '', '', '', '', '', '', '']);
-          return;
-        }
-        rows.push([
-          j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller',
-          statusLabels[fb.critere_navigation] || '', statusLabels[fb.critere_comprehension] || '', statusLabels[fb.critere_performance] || '',
-          statusLabels[fb.critere_fonctionnel] || '', statusLabels[fb.critere_design] || '',
-          fb.note !== null && fb.note !== undefined ? fb.note : '', fb.statut_realisation || '',
-          fb.comment || '', fb.verbatim || '', fb.suggestion || ''
-        ]);
-      });
-
-      var ws = XLSX.utils.aoa_to_sheet(rows);
-      ws['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 12 }, { wch: 40 }, { wch: 40 }, { wch: 40 }];
-      var sheetName = (t.first_name + ' ' + t.last_name).substring(0, 31);
-      XLSX.utils.book_append_sheet(wb, ws, sheetName);
-    });
-
-    // Download
-    var now = new Date();
-    var dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-    XLSX.writeFile(wb, 'TerraGrow-Testing-Export-' + dateStr + '.xlsx');
-  });
+  // Store testers for export
+  _adminData.testers = testers;
 
   // Show
   document.getElementById('loading').classList.add('hidden');
@@ -474,3 +402,86 @@
     document.getElementById('page-content').classList.add('visible');
   }
 })();
+
+// --- EXPORT EXCEL (outside try/catch so it always attaches) ---
+document.getElementById('export-excel').addEventListener('click', function() {
+  if (typeof XLSX === 'undefined') {
+    alert('La librairie Excel n\'a pas pu se charger. Rechargez la page.');
+    return;
+  }
+  var d = _adminData;
+  if (!d.journeys.length) { alert('Aucune donnée à exporter.'); return; }
+
+  var wb = XLSX.utils.book_new();
+  var statusLabels = { ok: 'OK', a_ameliorer: 'À améliorer', bloquant: 'Bloquant' };
+
+  // Sheet 1: Synthèse globale
+  var globalRows = [['ID', 'Journey', 'Section', 'Nb feedbacks', 'Navigation OK', 'Navigation À amél.', 'Navigation Bloq.', 'Compréhension OK', 'Compréhension À amél.', 'Compréhension Bloq.', 'Performance OK', 'Performance À amél.', 'Performance Bloq.', 'Fonctionnel OK', 'Fonctionnel À amél.', 'Fonctionnel Bloq.', 'Design OK', 'Design À amél.', 'Design Bloq.', 'Note moyenne', 'Nb parcouru', 'Nb partiel']];
+  d.journeys.forEach(function(j) {
+    var fbs = d.feedbacksByJourney[j.id] || [];
+    var counts = {};
+    d.criteriaFields.forEach(function(f) { counts[f] = { ok: 0, a_ameliorer: 0, bloquant: 0 }; });
+    var noteS = 0, noteC = 0, parcouru = 0, partiel = 0;
+    fbs.forEach(function(fb) {
+      d.criteriaFields.forEach(function(f) { if (fb[f] && counts[f][fb[f]] !== undefined) counts[f][fb[f]]++; });
+      if (fb.statut_realisation === 'termine') parcouru++;
+      else if (fb.statut_realisation === 'en_cours' || fb.statut_realisation === 'bloque') partiel++;
+      if (fb.note !== null && fb.note !== undefined) { noteS += fb.note; noteC++; }
+    });
+    var row = [j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller', fbs.length];
+    d.criteriaFields.forEach(function(f) { row.push(counts[f].ok, counts[f].a_ameliorer, counts[f].bloquant); });
+    row.push(noteC > 0 ? Math.round(noteS / noteC * 10) / 10 : '', parcouru, partiel);
+    globalRows.push(row);
+  });
+  var wsGlobal = XLSX.utils.aoa_to_sheet(globalRows);
+  wsGlobal['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 12 }];
+  XLSX.utils.book_append_sheet(wb, wsGlobal, 'Synthèse');
+
+  // Sheet 2: Tous les feedbacks
+  var allRows = [['Testeur', 'Email', 'Journey ID', 'Journey', 'Section', 'Navigation', 'Compréhension', 'Performance', 'Fonctionnel', 'Design', 'Note /5', 'Statut', 'Commentaire', 'Verbatim', 'Suggestion']];
+  d.feedbacks.forEach(function(fb) {
+    var p = d.profileMap[fb.user_id];
+    var j = d.journeys.find(function(jj) { return jj.id === fb.journey_id; });
+    var name = p ? ((p.first_name && p.last_name) ? p.first_name + ' ' + p.last_name : (p.first_name || p.last_name || p.email || 'Inconnu')) : 'Inconnu';
+    var email = p ? (p.email || '') : '';
+    allRows.push([
+      name, email, fb.journey_id, j ? j.title : '', j ? (j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller') : '',
+      statusLabels[fb.critere_navigation] || '', statusLabels[fb.critere_comprehension] || '', statusLabels[fb.critere_performance] || '',
+      statusLabels[fb.critere_fonctionnel] || '', statusLabels[fb.critere_design] || '',
+      fb.note !== null && fb.note !== undefined ? fb.note : '', fb.statut_realisation || '',
+      fb.comment || '', fb.verbatim || '', fb.suggestion || ''
+    ]);
+  });
+  var wsAll = XLSX.utils.aoa_to_sheet(allRows);
+  wsAll['!cols'] = [{ wch: 20 }, { wch: 25 }, { wch: 5 }, { wch: 35 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 12 }, { wch: 40 }, { wch: 40 }, { wch: 40 }];
+  XLSX.utils.book_append_sheet(wb, wsAll, 'Tous les feedbacks');
+
+  // One sheet per tester
+  d.testers.forEach(function(t) {
+    var userFbs = d.feedbacksByUser[t.id] || [];
+    if (userFbs.length === 0) return;
+    var rows = [['Journey ID', 'Journey', 'Section', 'Navigation', 'Compréhension', 'Performance', 'Fonctionnel', 'Design', 'Note /5', 'Statut', 'Commentaire', 'Verbatim', 'Suggestion']];
+    d.journeys.forEach(function(j) {
+      var fb = userFbs.find(function(f) { return f.journey_id === j.id; });
+      if (!fb) {
+        rows.push([j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller', '', '', '', '', '', '', '', '', '', '']);
+        return;
+      }
+      rows.push([
+        j.id, j.title, j.section === 'agriculteur' ? 'Agriculteur' : 'Conseiller',
+        statusLabels[fb.critere_navigation] || '', statusLabels[fb.critere_comprehension] || '', statusLabels[fb.critere_performance] || '',
+        statusLabels[fb.critere_fonctionnel] || '', statusLabels[fb.critere_design] || '',
+        fb.note !== null && fb.note !== undefined ? fb.note : '', fb.statut_realisation || '',
+        fb.comment || '', fb.verbatim || '', fb.suggestion || ''
+      ]);
+    });
+    var ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{ wch: 5 }, { wch: 35 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 12 }, { wch: 40 }, { wch: 40 }, { wch: 40 }];
+    var sheetName = (t.first_name + ' ' + t.last_name).substring(0, 31);
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
+
+  var now = new Date();
+  var dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  XLSX.writeFile(wb, 'TerraGrow-Testing-Export-' + dateStr + '.xlsx');
+});
