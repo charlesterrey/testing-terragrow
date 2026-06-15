@@ -392,7 +392,7 @@
       ]
     },
     {
-      "id": "SA1",
+      "id": "A14",
       "section": "agriculteur",
       "title": "Chat · Notification scénario",
       "module": "Scénarios · Chat / Notification",
@@ -409,7 +409,7 @@
       ]
     },
     {
-      "id": "SA2",
+      "id": "A15",
       "section": "agriculteur",
       "title": "Activation d'un scénario",
       "module": "Scénarios · Activation",
@@ -426,7 +426,7 @@
       ]
     },
     {
-      "id": "SA3",
+      "id": "A16",
       "section": "agriculteur",
       "title": "Impact sur le Pluriannuel",
       "module": "Scénarios · Impact Pluriannuel",
@@ -443,7 +443,7 @@
       ]
     },
     {
-      "id": "SA4",
+      "id": "A17",
       "section": "agriculteur",
       "title": "Impact sur la Trésorerie",
       "module": "Scénarios · Impact Trésorerie",
@@ -460,7 +460,7 @@
       ]
     },
     {
-      "id": "SC1",
+      "id": "C11",
       "section": "conseiller",
       "title": "Scénario Initial (par défaut)",
       "module": "Scénarios · Scénario Initial",
@@ -477,7 +477,7 @@
       ]
     },
     {
-      "id": "SC2",
+      "id": "C12",
       "section": "conseiller",
       "title": "Création d'un scénario custom",
       "module": "Scénarios · Création custom",
@@ -494,7 +494,7 @@
       ]
     },
     {
-      "id": "SC3",
+      "id": "C13",
       "section": "conseiller",
       "title": "Configuration des variables — catégories & deltas %",
       "module": "Scénarios · Variables & deltas",
@@ -511,7 +511,7 @@
       ]
     },
     {
-      "id": "SC4",
+      "id": "C14",
       "section": "conseiller",
       "title": "Toggle Année / Mois & cascade forward",
       "module": "Scénarios · Granularité & cascade",
@@ -528,7 +528,7 @@
       ]
     },
     {
-      "id": "SC5",
+      "id": "C15",
       "section": "conseiller",
       "title": "Récap avant publication",
       "module": "Scénarios · Récap",
@@ -545,7 +545,7 @@
       ]
     },
     {
-      "id": "SC6",
+      "id": "C16",
       "section": "conseiller",
       "title": "Sélection des clients cibles & impact prévisualisé",
       "module": "Scénarios · Ciblage & impact",
@@ -562,7 +562,7 @@
       ]
     },
     {
-      "id": "SC7",
+      "id": "C17",
       "section": "conseiller",
       "title": "Publication & envoi du message chat",
       "module": "Scénarios · Publication",
@@ -579,7 +579,7 @@
       ]
     },
     {
-      "id": "SC8",
+      "id": "C18",
       "section": "conseiller",
       "title": "Cycle de vie — modifier, dupliquer, archiver, supprimer",
       "module": "Scénarios · Cycle de vie",
@@ -596,7 +596,7 @@
       ]
     },
     {
-      "id": "SC9",
+      "id": "C19",
       "section": "conseiller",
       "title": "Vue portefeuille avec impact d'un scénario",
       "module": "Scénarios · Vue portefeuille",
