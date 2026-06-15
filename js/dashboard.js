@@ -162,6 +162,9 @@
     allCards.push({ el: card, section: j.section });
   });
 
+  // Initial visible count (filterCards only runs on click)
+  document.getElementById('visible-count').textContent = allCards.length;
+
   // Filters
   document.getElementById('filter-all').addEventListener('click', function() { filterCards('all'); });
   document.getElementById('filter-agri').addEventListener('click', function() { filterCards('agriculteur'); });

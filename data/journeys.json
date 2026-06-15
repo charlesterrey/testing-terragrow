@@ -390,6 +390,227 @@
         "Le rattachement au dossier client est lisible",
         "Je gagne du temps vs SMS / WhatsApp / mail"
       ]
+    },
+    {
+      "id": "SA1",
+      "section": "agriculteur",
+      "title": "Chat · Notification scénario",
+      "module": "Scénarios · Chat / Notification",
+      "userStory": "En tant qu'agriculteur, je reçois un message TerraGrow Chat de mon conseiller qui me partage un scénario macro-économique applicable à mon exploitation. (Un scénario doit être partagé au préalable par un conseiller ayant les droits.)",
+      "screens": "Notification TerraGrow Chat -> ouverture du message -> aperçu du scénario partagé (titre, contexte, période) -> accès à la liste des scénarios.",
+      "objectif": "Je comprends qu'un scénario m'a été partagé et ce qu'il représente.",
+      "video": "",
+      "criteria": [
+        "La notification de partage de scénario est visible et compréhensible",
+        "Le message chat explique clairement le scénario partagé",
+        "Le lien entre le message et le scénario à consulter est évident",
+        "Le titre et le contexte du scénario sont lisibles dès la notification",
+        "Je sais quoi faire après avoir reçu le message"
+      ]
+    },
+    {
+      "id": "SA2",
+      "section": "agriculteur",
+      "title": "Activation d'un scénario",
+      "module": "Scénarios · Activation",
+      "userStory": "En tant qu'agriculteur, je consulte la liste des scénarios partagés avec moi et j'active celui que je veux étudier comme calque sur mes dashboards.",
+      "screens": "Liste des scénarios partagés -> sélection d'un scénario -> activation comme calque -> retour sur les dashboards avec le scénario actif.",
+      "objectif": "J'active facilement un scénario et je comprends qu'il s'applique en calque sur mes données.",
+      "video": "",
+      "criteria": [
+        "La liste des scénarios partagés est claire et lisible",
+        "Activer un scénario comme calque est intuitif",
+        "Je comprends la différence entre mes données réelles et le calque scénario",
+        "Je vois clairement quel scénario est actif",
+        "Désactiver ou changer de scénario est simple"
+      ]
+    },
+    {
+      "id": "SA3",
+      "section": "agriculteur",
+      "title": "Impact sur le Pluriannuel",
+      "module": "Scénarios · Impact Pluriannuel",
+      "userStory": "En tant qu'agriculteur, je visualise l'impact d'un scénario actif sur la trajectoire pluriannuelle de mon exploitation.",
+      "screens": "Dashboard Pluriannuel -> scénario actif appliqué -> comparaison trajectoire de référence vs scénario -> lecture des écarts par exercice.",
+      "objectif": "Je perçois clairement l'effet du scénario sur ma trajectoire économique pluriannuelle.",
+      "video": "",
+      "criteria": [
+        "L'impact du scénario sur le pluriannuel est visuellement lisible",
+        "La comparaison référence vs scénario est claire",
+        "Les écarts par exercice sont compréhensibles",
+        "Je distingue bien ce qui relève du scénario et de mes données réelles",
+        "La valeur de cette projection est perçue comme utile"
+      ]
+    },
+    {
+      "id": "SA4",
+      "section": "agriculteur",
+      "title": "Impact sur la Trésorerie",
+      "module": "Scénarios · Impact Trésorerie",
+      "userStory": "En tant qu'agriculteur, je visualise l'impact d'un scénario actif sur ma trésorerie 12 mois.",
+      "screens": "Dashboard Trésorerie 12 mois -> scénario actif appliqué -> courbe de référence vs scénario -> repérage des tensions de cash induites.",
+      "objectif": "Je comprends comment le scénario modifie ma trésorerie sur 12 mois.",
+      "video": "",
+      "criteria": [
+        "L'impact du scénario sur la trésorerie 12 mois est lisible",
+        "La comparaison référence vs scénario est claire",
+        "Les tensions de trésorerie induites sont bien identifiables",
+        "La granularité mensuelle est compréhensible",
+        "Cette projection m'aide à anticiper mes tensions de cash"
+      ]
+    },
+    {
+      "id": "SC1",
+      "section": "conseiller",
+      "title": "Scénario Initial (par défaut)",
+      "module": "Scénarios · Scénario Initial",
+      "userStory": "En tant que conseiller ayant droit, je crée et configure le Scénario Initial du cabinet, qui sert de base prévisionnelle à l'ensemble des agriculteurs.",
+      "screens": "Espace scénarios -> création / configuration du Scénario Initial -> définition des hypothèses de base -> enregistrement comme référence cabinet.",
+      "objectif": "Je comprends que le Scénario Initial sert de socle prévisionnel commun.",
+      "video": "",
+      "criteria": [
+        "Le rôle du Scénario Initial comme base commune est clair",
+        "Configurer les hypothèses de base est intuitif",
+        "La portée (tout le cabinet) est bien comprise",
+        "L'enregistrement comme référence est explicite",
+        "La distinction Scénario Initial vs scénarios custom est claire"
+      ]
+    },
+    {
+      "id": "SC2",
+      "section": "conseiller",
+      "title": "Création d'un scénario custom",
+      "module": "Scénarios · Création custom",
+      "userStory": "En tant que conseiller, je crée un scénario custom (ex. « Guerre Iran 2027 ») avec un titre, un contexte et une période de projection.",
+      "screens": "Espace scénarios -> nouveau scénario custom -> saisie titre + contexte -> choix de la période de projection -> brouillon créé.",
+      "objectif": "Je crée rapidement un scénario custom bien cadré.",
+      "video": "",
+      "criteria": [
+        "Créer un scénario custom est intuitif",
+        "La saisie du titre et du contexte est claire",
+        "Le choix de la période de projection est compréhensible",
+        "Je comprends que le scénario démarre en brouillon",
+        "Le formulaire de création est complet sans être lourd"
+      ]
+    },
+    {
+      "id": "SC3",
+      "section": "conseiller",
+      "title": "Configuration des variables — catégories & deltas %",
+      "module": "Scénarios · Variables & deltas",
+      "userStory": "En tant que conseiller, je sélectionne des variables (Cat1 / Cat2 / Cat3) dans la sidebar et je saisis des deltas % par période dans le panel droit.",
+      "screens": "Sidebar catégories de variables (Cat1/Cat2/Cat3) -> sélection des variables -> panel droit de saisie -> deltas % par période.",
+      "objectif": "Je configure mes variables et leurs variations sans ambiguïté.",
+      "video": "",
+      "criteria": [
+        "La sélection des variables par catégorie est claire",
+        "La saisie des deltas % par période est intuitive",
+        "L'utilisation de la sidebar pour le paramétrage est claire",
+        "Les catégories Cat1 / Cat2 / Cat3 sont compréhensibles",
+        "La logique de variation en pourcentage est lisible"
+      ]
+    },
+    {
+      "id": "SC4",
+      "section": "conseiller",
+      "title": "Toggle Année / Mois & cascade forward",
+      "module": "Scénarios · Granularité & cascade",
+      "userStory": "En tant que conseiller, je bascule entre granularité Année et Mois, et je comprends comment un delta saisi à une date donnée se propage en cascade forward.",
+      "screens": "Vue de saisie -> toggle Année / Mois -> saisie d'un delta à une date -> visualisation de la propagation en cascade forward.",
+      "objectif": "Je comprends la granularité et la propagation des deltas dans le temps.",
+      "video": "",
+      "criteria": [
+        "Le toggle Année / Mois est clair et réactif",
+        "La propagation en cascade forward est compréhensible",
+        "L'effet d'un delta saisi à une date est visible",
+        "Le changement de granularité ne fait pas perdre l'utilisateur",
+        "La logique temporelle est cohérente"
+      ]
+    },
+    {
+      "id": "SC5",
+      "section": "conseiller",
+      "title": "Récap avant publication",
+      "module": "Scénarios · Récap",
+      "userStory": "En tant que conseiller, je consulte la page récap qui présente le contexte, la période et les variables modifiées avec les écarts vs Scénario Initial avant de publier.",
+      "screens": "Page récap -> rappel contexte + période -> tableau des variables modifiées -> écarts vs Scénario Initial -> bouton publier.",
+      "objectif": "Je vérifie d'un coup d'œil tout ce qui sera publié.",
+      "video": "",
+      "criteria": [
+        "La page récap synthétise clairement le scénario",
+        "Les écarts vs Scénario Initial sont lisibles",
+        "Le contexte et la période sont bien rappelés",
+        "La liste des variables modifiées est complète",
+        "Le passage récap vers publication est rassurant"
+      ]
+    },
+    {
+      "id": "SC6",
+      "section": "conseiller",
+      "title": "Sélection des clients cibles & impact prévisualisé",
+      "module": "Scénarios · Ciblage & impact",
+      "userStory": "En tant que conseiller, je filtre mes exploitations, je coche les cibles, et je vois en temps réel l'impact prévisualisé (CA / Charges / EBE).",
+      "screens": "Liste des exploitations -> filtres -> sélection des cibles (cases à cocher) -> panneau d'impact prévisualisé en temps réel (CA / Charges / EBE).",
+      "objectif": "Je cible les bonnes exploitations et j'anticipe l'impact avant publication.",
+      "video": "",
+      "criteria": [
+        "Le filtrage des exploitations est efficace",
+        "La sélection des cibles est claire",
+        "L'impact prévisualisé (CA / Charges / EBE) est lisible",
+        "La mise à jour en temps réel est compréhensible",
+        "Je me sens en confiance pour choisir mes cibles"
+      ]
+    },
+    {
+      "id": "SC7",
+      "section": "conseiller",
+      "title": "Publication & envoi du message chat",
+      "module": "Scénarios · Publication",
+      "userStory": "En tant que conseiller, je publie le scénario : le statut passe à Publié, le commentaire est envoyé en message TerraGrow Chat aux agriculteurs ciblés.",
+      "screens": "Bouton publier -> confirmation -> statut passe à Publié -> rédaction / envoi du message chat -> envoi aux agriculteurs ciblés.",
+      "objectif": "Je publie et je communique le scénario en une seule action fluide.",
+      "video": "",
+      "criteria": [
+        "L'action de publication est claire et sans ambiguïté",
+        "Le passage du statut à Publié est visible",
+        "L'envoi du message chat aux ciblés est compréhensible",
+        "Je sais quels agriculteurs ont été notifiés",
+        "Le lien publication et communication est évident"
+      ]
+    },
+    {
+      "id": "SC8",
+      "section": "conseiller",
+      "title": "Cycle de vie — modifier, dupliquer, archiver, supprimer",
+      "module": "Scénarios · Cycle de vie",
+      "userStory": "En tant que conseiller, je gère le cycle de vie d'un scénario via le menu d'actions : modifier (silencieux côté agriculteur), dupliquer en brouillon, archiver ou supprimer.",
+      "screens": "Menu d'actions d'un scénario -> modifier (sans renotifier l'agriculteur) / dupliquer en brouillon / archiver / supprimer -> confirmation.",
+      "objectif": "Je gère le cycle de vie d'un scénario en comprenant l'effet de chaque action.",
+      "video": "",
+      "criteria": [
+        "Le menu d'actions est clair et accessible",
+        "L'effet de « modifier » (silencieux côté agriculteur) est compréhensible",
+        "Dupliquer en brouillon est intuitif",
+        "Archiver et supprimer sont bien distingués",
+        "Les conséquences de chaque action sont explicites"
+      ]
+    },
+    {
+      "id": "SC9",
+      "section": "conseiller",
+      "title": "Vue portefeuille avec impact d'un scénario",
+      "module": "Scénarios · Vue portefeuille",
+      "userStory": "En tant que conseiller responsable dossier, je consulte un scénario publié et je détecte les exploitations fragiles parmi mes adhérents.",
+      "screens": "Vue portefeuille -> scénario publié appliqué -> indicateurs d'impact par exploitation -> repérage des exploitations fragiles.",
+      "objectif": "Je détecte en un coup d'œil les exploitations fragilisées par un scénario.",
+      "video": "",
+      "criteria": [
+        "L'impact du scénario à l'échelle du portefeuille est lisible",
+        "Les exploitations fragiles ressortent clairement",
+        "Les indicateurs d'impact par exploitation sont pertinents",
+        "Le passage portefeuille vers fiche exploitation est fluide",
+        "Cette vue m'aide à prioriser mon accompagnement"
+      ]
     }
   ]
 }
