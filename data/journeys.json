@@ -611,6 +611,346 @@
         "Le passage portefeuille vers fiche exploitation est fluide",
         "Cette vue m'aide à prioriser mon accompagnement"
       ]
+    },
+    {
+      "id": "T1",
+      "section": "agriculteur",
+      "title": "Surface Betterave sucrière 2026",
+      "module": "Data Thalgott · Assolement · vue parcellaire",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Surface Betterave sucrière 2026 » correspond à la valeur attendue du jeu de test : 24,51 ha.",
+      "screens": "Module Agronomie → Assolement prévisionnel → ligne Betterave sucrière, exercice 2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "La surface 24,51 ha est affichée à l'écran",
+        "L'unité (ha) est clairement explicitée",
+        "La cohérence avec le parcellaire (parcelles assignées à Betterave) est respectée",
+        null,
+        null
+      ]
+    },
+    {
+      "id": "T2",
+      "section": "agriculteur",
+      "title": "SAU totale 2026 (somme des 4 cultures)",
+      "module": "Data Thalgott · Assolement · vue parcellaire",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « SAU totale 2026 (somme des 4 cultures) » correspond à la valeur attendue du jeu de test : ≈ 107,18 ha (Betterave 24,51 + Maïs 49,84 + Blé tendre 18,95 + Soja 13,88).",
+      "screens": "Module Agronomie → Assolement prévisionnel → totalisateur 2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le total affiché correspond à la somme attendue (107,18 ha)",
+        "La ventilation par culture est accessible (24,51 / 49,84 / 18,95 / 13,88)",
+        "L'unité ha est cohérente sur toutes les cultures",
+        "La SAU 2026 correspond bien à la totalité du parcellaire géoréférencé",
+        null
+      ]
+    },
+    {
+      "id": "T3",
+      "section": "agriculteur",
+      "title": "Charges opérationnelles Betterave 2026 — total /ha",
+      "module": "Data Thalgott · Rentabilité · focus Betterave",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Charges opérationnelles Betterave 2026 — total /ha » correspond à la valeur attendue du jeu de test : 1 392,59 €/ha (Semences 281,75 + Engrais 523,90 + Phytos 586,94).",
+      "screens": "Page Rentabilité → focus atelier Betterave → onglet Charges opérationnelles.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le total Charges opé Betterave matche 1 392,59 €/ha (±1 %)",
+        "La ventilation par poste est lisible (Semences / Engrais / Phytos)",
+        "Chaque poste est cohérent avec l'ITK Betterave (doses × prix)",
+        "Le total est cohérent entre l'affichage €/ha et le total exploitation (× surface)",
+        "La source ITK est traçable / cliquable depuis l'écran"
+      ]
+    },
+    {
+      "id": "T4",
+      "section": "agriculteur",
+      "title": "Stock Engrais AMM0 27 — valeur",
+      "module": "Data Thalgott · Stocks · état initial",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Stock Engrais AMM0 27 — valeur » correspond à la valeur attendue du jeu de test : 9 900 € (18 t × 550 €/t).",
+      "screens": "Module Stocks → onglet Intrants → ligne AMM0 27.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "La valeur 9 900 € est affichée",
+        "La décomposition (18 t × 550 €/t) est lisible / accessible en drill",
+        "La cohérence avec les achats N-1 est respectée",
+        null,
+        null
+      ]
+    },
+    {
+      "id": "T5",
+      "section": "agriculteur",
+      "title": "Opération du 01/12/2025 — Betterave, Travail du sol",
+      "module": "Data Thalgott · Carnet de plaine",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Opération du 01/12/2025 — Betterave, Travail du sol » correspond à la valeur attendue du jeu de test : Couvre les parcelles 1, 4, 9 — couverture « Toutes ».",
+      "screens": "Module Carnet de plaine → filtre date 01/12/2025 → opération Travail du sol Betterave.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "L'opération est bien présente à la date du 01/12/2025",
+        "Le type d'opération « Travail du sol » est correct",
+        "Les parcelles concernées (1, 4, 9) sont les bonnes",
+        "La couverture « Toutes » est cohérente avec le parcellaire Betterave",
+        null
+      ]
+    },
+    {
+      "id": "T6",
+      "section": "agriculteur",
+      "title": "Encaissement vente Betterave — facture FV01",
+      "module": "Data Thalgott · Trésorerie · prévisionnel 12 mois",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Encaissement vente Betterave — facture FV01 » correspond à la valeur attendue du jeu de test : 83 334 € au 15/12/2026 (Coopérative).",
+      "screens": "Module Trésorerie → vue 12 mois → mois de décembre 2026, ligne encaissement vente Betterave.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le montant 83 334 € apparaît dans le prévisionnel",
+        "La date d'échéance 15/12/2026 est respectée",
+        "La contrepartie « Coopérative » est identifiable",
+        "L'encaissement remonte au bon mois sur le graphique 12 mois",
+        null
+      ]
+    },
+    {
+      "id": "T7",
+      "section": "agriculteur",
+      "title": "Prélèvement Groupama Assurance — 15/01/2026",
+      "module": "Data Thalgott · Trésorerie · flux bancaires",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Prélèvement Groupama Assurance — 15/01/2026 » correspond à la valeur attendue du jeu de test : −8 067,38 € catégorisé « Assurances » (sens : Décaissement).",
+      "screens": "Module Trésorerie → onglet Flux bancaires → entrée Powens du 15/01/2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "La transaction −8 067,38 € est bien présente",
+        "La date 15/01/2026 est conforme",
+        "La catégorisation « Assurances » est correcte",
+        "Le sens « Décaissement » est cohérent",
+        null
+      ]
+    },
+    {
+      "id": "T8",
+      "section": "agriculteur",
+      "title": "Subventions PAC DPB — montant annuel",
+      "module": "Data Thalgott · Trésorerie · PAC",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Subventions PAC DPB — montant annuel » correspond à la valeur attendue du jeu de test : 29 541,86 € (70 % acompte mi-octobre + 30 % solde décembre).",
+      "screens": "Module Trésorerie → vue 12 mois → encaissements PAC mi-octobre & décembre.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le montant annuel PAC DPB est exact (29 541,86 €)",
+        "Le découpage 70 / 30 est respecté",
+        "Les dates (mi-octobre / décembre) sont correctes",
+        "Le tableau distingue clairement acompte et solde",
+        null
+      ]
+    },
+    {
+      "id": "T9",
+      "section": "agriculteur",
+      "title": "Charges totales Betterave 2026 (opé + structure)",
+      "module": "Data Thalgott · Rentabilité · focus Betterave",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Charges totales Betterave 2026 (opé + structure) » correspond à la valeur attendue du jeu de test : 2 346,68 €/ha — dont 954,09 €/ha de structure au prorata SAU.",
+      "screens": "Page Rentabilité → focus atelier Betterave → ligne Charges totales.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le total Charges Betterave matche 2 346,68 €/ha",
+        "La décomposition (opé + structure) est lisible",
+        "Les charges de structure 954,09 €/ha sont calculées au prorata SAU",
+        "La cohérence opé ITK + structure GL N-1 tient",
+        "La source des charges de structure (grand livre N-1) est tracée"
+      ]
+    },
+    {
+      "id": "T10",
+      "section": "agriculteur",
+      "title": "Prix de revient Betterave — rendement moyen (85 t/ha)",
+      "module": "Data Thalgott · Rentabilité · focus Betterave",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Prix de revient Betterave — rendement moyen (85 t/ha) » correspond à la valeur attendue du jeu de test : 27,61 €/t — verdict « Rentable » vs prix marché 40 €/t.",
+      "screens": "Page Rentabilité → focus atelier Betterave → onglet Prix de revient → hypothèse rendement moyen.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le prix de revient affiché matche 27,61 €/t",
+        "Le rendement moyen (85 t/ha) est bien l'hypothèse appliquée",
+        "La comparaison avec le prix marché (40 €/t) est lisible",
+        "Le verdict « Rentable » est cohérent",
+        "Les 3 scénarios de rendement (pessimiste / moyen / optimiste) sont accessibles"
+      ]
+    },
+    {
+      "id": "T11",
+      "section": "conseiller",
+      "title": "Identité dossier Thalgott",
+      "module": "Data Thalgott · Fiche client · vue d'ensemble",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Identité dossier Thalgott » correspond à la valeur attendue du jeu de test : THALGOTT Arnaud · OBENHEIM (67) · SIRET 433 878 81….",
+      "screens": "Portail conseiller → Portefeuille client → ouvrir la fiche THALGOTT Arnaud.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le nom THALGOTT Arnaud est correct",
+        "La commune OBENHEIM (67) est affichée",
+        "Le SIRET 433 878 81… est visible",
+        null,
+        null
+      ]
+    },
+    {
+      "id": "T12",
+      "section": "conseiller",
+      "title": "Produits totaux 2026 — Scénario S0 tendanciel",
+      "module": "Data Thalgott · Fiche client · Pluriannuel SIG",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Produits totaux 2026 — Scénario S0 tendanciel » correspond à la valeur attendue du jeu de test : 268 192,87 € (dont Ventes végétaux 223 108,80 € + Autres produits 45 084,07 €).",
+      "screens": "Fiche client > Pluriannuel → scénario S0 actif → ligne Produits totaux, colonne 2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le total Produits 2026 matche 268 192,87 €",
+        "La décomposition Ventes végétaux + Autres produits est lisible",
+        "Les ventes par culture sont accessibles en drill",
+        "Le scénario S0 est explicitement actif à l'écran",
+        "La cohérence avec la rentabilité par atelier (T3, T18) tient"
+      ]
+    },
+    {
+      "id": "T13",
+      "section": "conseiller",
+      "title": "Marge brute 2026 — Scénario S0",
+      "module": "Data Thalgott · Fiche client · Pluriannuel SIG",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Marge brute 2026 — Scénario S0 » correspond à la valeur attendue du jeu de test : 161 891,92 € (CA 268 192,87 − Charges opé 106 300,95).",
+      "screens": "Fiche client > Pluriannuel → scénario S0 actif → ligne Marge brute, colonne 2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "La marge brute 2026 matche 161 891,92 €",
+        "Le calcul MB = Produits − Charges opé est traçable",
+        "La cohérence avec les lignes T12 (Produits) et T14 (Charges opé) tient",
+        "La lecture €/exploitation est claire",
+        null
+      ]
+    },
+    {
+      "id": "T14",
+      "section": "conseiller",
+      "title": "Charges opérationnelles 2026 — Scénario S0",
+      "module": "Data Thalgott · Fiche client · Pluriannuel SIG",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Charges opérationnelles 2026 — Scénario S0 » correspond à la valeur attendue du jeu de test : 106 300,95 € (Semences 20 912 + Engrais 55 139 + Phytos 30 250).",
+      "screens": "Fiche client > Pluriannuel → scénario S0 actif → ligne Charges opérationnelles 2026.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le total Charges opé 2026 matche 106 300,95 €",
+        "La ventilation Semences / Engrais / Phytos est lisible",
+        "La somme des 4 cultures × ITK est cohérente",
+        "La cohérence avec la rentabilité par culture (T3, T18) tient",
+        null
+      ]
+    },
+    {
+      "id": "T15",
+      "section": "conseiller",
+      "title": "Annuité emprunt tracteur (1642030)",
+      "module": "Data Thalgott · Fiche client · Projets / Emprunts",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Annuité emprunt tracteur (1642030) » correspond à la valeur attendue du jeu de test : ≈ 16 380 €/an (capital 106 122,75 € · taux 2 % · 7 ans · annuités constantes).",
+      "screens": "Fiche client > Projets ou Emprunts → ligne « Prêt tracteur (1642030) ».",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "L'annuité affichée matche ≈ 16 380 €/an (±1 %)",
+        "Les paramètres (capital 106 122,75 € / taux 2 % / 7 ans) sont visibles",
+        "La formule d'annuité constante est traçable",
+        "L'échéancier détaillé (capital + intérêts par année) est accessible",
+        "Le rattachement à la trésorerie 12 mois est cohérent"
+      ]
+    },
+    {
+      "id": "T16",
+      "section": "conseiller",
+      "title": "Charges de structure /ha — prorata SAU",
+      "module": "Data Thalgott · Fiche client · Rentabilité",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Charges de structure /ha — prorata SAU » correspond à la valeur attendue du jeu de test : 954,09 €/ha (charges N-1 issues du grand livre, prorata sur SAU 2026).",
+      "screens": "Fiche client > Rentabilité → onglet Structure → ligne /ha.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "La valeur 954,09 €/ha est correcte",
+        "Le prorata SAU (charges N-1 / SAU 2026) est tracé",
+        "La ventilation par poste de structure est accessible",
+        "La cohérence avec le grand livre N-1 tient",
+        null
+      ]
+    },
+    {
+      "id": "T17",
+      "section": "conseiller",
+      "title": "Affectation table pivot — Loyers fermage (compte 61310000)",
+      "module": "Data Thalgott · Fiche client · Rentabilité",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Affectation table pivot — Loyers fermage (compte 61310000) » correspond à la valeur attendue du jeu de test : 20 775,96 € sur Cat1 « Charges de structure » / Cat2 « Fermages ».",
+      "screens": "Fiche client > Rentabilité → drill structure → ligne Fermages (vs grand livre).",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le montant 20 775,96 € est affiché",
+        "L'affectation Cat1 « Charges de structure » est correcte",
+        "L'affectation Cat2 « Fermages » est correcte",
+        "La cohérence compte comptable 61310000 ↔ pivot est lisible",
+        "Le drill-down vers la ligne d'origine du grand livre est possible"
+      ]
+    },
+    {
+      "id": "T18",
+      "section": "conseiller",
+      "title": "Prix de revient Maïs grain — rendement moyen 10,2 t/ha",
+      "module": "Data Thalgott · Fiche client · Rentabilité (focus Maïs)",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Prix de revient Maïs grain — rendement moyen 10,2 t/ha » correspond à la valeur attendue du jeu de test : 198,64 €/t — verdict « Rentable » vs prix marché 200 €/t (proche du seuil).",
+      "screens": "Fiche client > Rentabilité → focus atelier Maïs grain → hypothèse rendement moyen.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Le prix de revient affiché matche 198,64 €/t",
+        "Le verdict « Rentable » est cohérent (proche du seuil 200 €/t)",
+        "Les 3 hypothèses (9,5 / 10,2 / 11 t/ha) sont accessibles",
+        "Le seuil critique (rentable / non rentable) est marqué visuellement",
+        "La cohérence d'affichage avec T10 (Betterave) est respectée"
+      ]
+    },
+    {
+      "id": "T19",
+      "section": "conseiller",
+      "title": "Impact choc Engrais +25 % sur la marge brute 2026",
+      "module": "Data Thalgott · Fiche client · Pluriannuel — Scénario S1",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Impact choc Engrais +25 % sur la marge brute 2026 » correspond à la valeur attendue du jeu de test : Augmentation des charges opé Engrais ~+13 800 € en 2026 → impact négatif sur MB & EBE.",
+      "screens": "Fiche client > Pluriannuel → activer le scénario S1 (choc) → comparer ligne MB 2026 vs S0.",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "L'activation du scénario S1 modifie bien les charges affichées",
+        "L'impact sur le poste Engrais (~+13 800 €) est cohérent",
+        "La marge brute 2026 baisse en conséquence",
+        "Le S0 reste accessible en parallèle pour comparaison",
+        "Le delta vs S0 est visible directement à l'écran"
+      ]
+    },
+    {
+      "id": "T20",
+      "section": "conseiller",
+      "title": "Vente Betterave par exercice — rotation 2026 → 2030",
+      "module": "Data Thalgott · Fiche client · Pluriannuel — Cohérence rotation",
+      "userStory": "En tant que conseiller, sur le dossier démo Thalgott, je vérifie que « Vente Betterave par exercice — rotation 2026 → 2030 » correspond à la valeur attendue du jeu de test : 2026 : 83 334 € · 2027 : 64 430 € · 2028 : 169 456 € · 2029 : 20 162 € · 2030 : 83 334 €.",
+      "screens": "Fiche client > Pluriannuel → ligne « Vente Betterave sucrière » sur 5 exercices (cohérence rotation).",
+      "objectif": "Je confirme que la valeur affichée dans l'outil correspond au jeu de test Thalgott (écart acceptable ±1 %).",
+      "video": "",
+      "criteria": [
+        "Les 5 valeurs (83 334 / 64 430 / 169 456 / 20 162 / 83 334) sont exactes",
+        "La cohérence avec la rotation parcellaire est tracée",
+        "La culture Betterave revient bien tous les ~3-4 ans (rotation)",
+        "Le total CA Ventes végétaux par exercice est cohérent",
+        "Le drill-down jusqu'au détail parcelle est possible"
+      ]
     }
   ]
 }

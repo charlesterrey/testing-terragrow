@@ -92,6 +92,10 @@ var _adminData = { feedbacks: [], profiles: [], journeys: [], testers: [], feedb
   var journeys = journeysData.journeys;
   var totalJourneys = journeys.length;
   var criteriaFields = ['critere_navigation', 'critere_comprehension', 'critere_performance', 'critere_fonctionnel', 'critere_design'];
+  // Required criteria count per journey (3 to 5) — some journeys have fewer than 5.
+  var reqByJourney = {};
+  journeys.forEach(function(j) { reqByJourney[j.id] = (j.criteria ? j.criteria.filter(function(c) { return c; }).length : 5); });
+  function countFilledFb(fb, n) { var c = 0; for (var i = 0; i < n; i++) { if (fb[criteriaFields[i]]) c++; } return c; }
 
   var feedbacksByJourney = {};
   var feedbacksByUser = {};
@@ -138,7 +142,8 @@ var _adminData = { feedbacks: [], profiles: [], journeys: [], testers: [], feedb
     var fbs = feedbacksByUser[t.id] || [];
     return fbs.filter(function(f) {
       var hn = f.note !== null && f.note !== undefined;
-      return hn && f.critere_navigation && f.critere_comprehension && f.critere_performance && f.critere_fonctionnel && f.critere_design;
+      var n = reqByJourney[f.journey_id] || 5;
+      return hn && n > 0 && countFilledFb(f, n) === n;
     }).length;
   }
 

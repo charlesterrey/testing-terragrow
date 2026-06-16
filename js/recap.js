@@ -47,6 +47,9 @@
 
   // Stats
   var criteriaFields = ['critere_navigation', 'critere_comprehension', 'critere_performance', 'critere_fonctionnel', 'critere_design'];
+  // Completion = all DEFINED criteria filled (3 to 5), not a hardcoded 5
+  function reqCrit(j) { return (j && j.criteria ? j.criteria.filter(function(c) { return c; }).length : 5); }
+  function countFilledFb(fb, n) { var c = 0; for (var i = 0; i < n; i++) { if (fb[criteriaFields[i]]) c++; } return c; }
   var done = 0, noteSum = 0, noteCount = 0;
   var criteriaCounts = {};
   criteriaFields.forEach(function(f) { criteriaCounts[f] = { ok: 0, a_ameliorer: 0, bloquant: 0 }; });
@@ -56,7 +59,8 @@
     var fb = fbMap[j.id];
     if (!fb) return;
     var hasNote = fb.note !== null && fb.note !== undefined;
-    var allC = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+    var nReq = reqCrit(j);
+    var allC = nReq > 0 && countFilledFb(fb, nReq) === nReq;
     if (hasNote && allC) done++;
     if (hasNote) { noteSum += fb.note; noteCount++; noteDistribution[fb.note]++; }
     criteriaFields.forEach(function(f) {
@@ -133,15 +137,16 @@
   }
 
   var sorted = allJourneys.slice().sort(function(a, b) {
-    function rank(fb) {
+    function rank(j, fb) {
       if (!fb) return 2;
       var hn = fb.note !== null && fb.note !== undefined;
-      var ac = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+      var nReq = reqCrit(j);
+      var ac = nReq > 0 && countFilledFb(fb, nReq) === nReq;
       if (hn && ac) return 0;
       if (hn || fb.critere_navigation || fb.critere_comprehension) return 1;
       return 2;
     }
-    return rank(fbMap[a.id]) - rank(fbMap[b.id]);
+    return rank(a, fbMap[a.id]) - rank(b, fbMap[b.id]);
   });
 
   sorted.forEach(function(j) {

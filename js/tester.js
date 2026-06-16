@@ -52,6 +52,10 @@
   var allJourneys = journeysData.journeys;
   var totalJourneys = allJourneys.length;
   var criteriaFields = ['critere_navigation', 'critere_comprehension', 'critere_performance', 'critere_fonctionnel', 'critere_design'];
+  // Required criteria count per journey (3 to 5) — some journeys have fewer than 5.
+  var reqByJourney = {};
+  allJourneys.forEach(function(j) { reqByJourney[j.id] = (j.criteria ? j.criteria.filter(function(c) { return c; }).length : 5); });
+  function countFilledFb(fb, n) { var c = 0; for (var i = 0; i < n; i++) { if (fb[criteriaFields[i]]) c++; } return c; }
 
   var fbMap = {};
   feedbacks.forEach(function(f) { fbMap[f.journey_id] = f; });
@@ -77,7 +81,8 @@
   var completed = 0, noteSum = 0, noteCount = 0;
   feedbacks.forEach(function(f) {
     var hn = f.note !== null && f.note !== undefined;
-    var ac = f.critere_navigation && f.critere_comprehension && f.critere_performance && f.critere_fonctionnel && f.critere_design;
+    var n = reqByJourney[f.journey_id] || 5;
+    var ac = n > 0 && countFilledFb(f, n) === n;
     if (hn && ac) completed++;
     if (hn) { noteSum += f.note; noteCount++; }
   });
@@ -102,7 +107,8 @@
   var journeyRows = allJourneys.map(function(j) {
     var fb = fbMap[j.id];
     var hn = fb && fb.note !== null && fb.note !== undefined;
-    var ac = fb && fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+    var n = reqByJourney[j.id] || 5;
+    var ac = fb && n > 0 && countFilledFb(fb, n) === n;
     var status = 'todo';
     if (hn && ac) status = 'done';
     else if (fb) status = 'partial';
