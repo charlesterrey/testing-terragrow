@@ -73,6 +73,12 @@
   var feedbackMap = {};
   feedbacks.forEach(function(fb) { feedbackMap[fb.journey_id] = fb; });
 
+  // Completion helpers — a journey is "complete" when its DEFINED criteria (3 to 5)
+  // are all filled, not a hardcoded 5 (some journeys have fewer than 5 criteria).
+  var CRIT_FIELDS = ['critere_navigation', 'critere_comprehension', 'critere_performance', 'critere_fonctionnel', 'critere_design'];
+  function reqCriteria(j) { return (j && j.criteria ? j.criteria.filter(function(c) { return c; }).length : 5); }
+  function filledCriteria(fb, n) { var c = 0; for (var i = 0; i < n; i++) { if (fb[CRIT_FIELDS[i]]) c++; } return c; }
+
   // Stats
   var done = 0, partial = 0, noteSum = 0, noteCount = 0;
   var agriDone = 0, agriTotal = 0, agriNoteSum = 0, agriNoteCount = 0;
@@ -84,7 +90,8 @@
     var fb = feedbackMap[j.id];
     if (!fb) return;
     var hasN = fb.note !== null && fb.note !== undefined;
-    var allC = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+    var nReq = reqCriteria(j);
+    var allC = nReq > 0 && filledCriteria(fb, nReq) === nReq;
     var anyFilled = hasN || fb.critere_navigation || fb.critere_comprehension || fb.critere_performance || fb.critere_fonctionnel || fb.critere_design;
     if (hasN && allC) { done++; if (isAgri) agriDone++; else consDone++; }
     else if (anyFilled) partial++;
@@ -138,17 +145,18 @@
     '</div>';
 
   // Sort: À faire (0) → En cours (1) → Parcouru (2), same logic as test page
-  function cardStatus(fb) {
+  function cardStatus(j, fb) {
     if (!fb) return 0;
     var hasN = fb.note !== null && fb.note !== undefined;
-    var allC = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+    var nReq = reqCriteria(j);
+    var allC = nReq > 0 && filledCriteria(fb, nReq) === nReq;
     var anyFilled = hasN || fb.critere_navigation || fb.critere_comprehension || fb.critere_performance || fb.critere_fonctionnel || fb.critere_design;
     if (hasN && allC) return 2; // Parcouru
     if (anyFilled) return 1;   // En cours
     return 0;                   // À faire
   }
   var sortedJourneys = journeys.slice().sort(function(a, b) {
-    return cardStatus(feedbackMap[a.id]) - cardStatus(feedbackMap[b.id]);
+    return cardStatus(a, feedbackMap[a.id]) - cardStatus(b, feedbackMap[b.id]);
   });
 
   // Render cards
@@ -192,21 +200,18 @@
     var el = document.createElement('a');
     el.href = 'test.html?id=' + j.id;
 
-    // Completion: same logic as test page — 5 criteria + note
+    // Completion: same logic as test page — DEFINED criteria (3 to 5) + note
+    var nReq = reqCriteria(j);
     var filled = 0;
     var hasNote = false;
     var allCriteria = false;
     if (fb) {
-      if (fb.critere_navigation) filled++;
-      if (fb.critere_comprehension) filled++;
-      if (fb.critere_performance) filled++;
-      if (fb.critere_fonctionnel) filled++;
-      if (fb.critere_design) filled++;
+      filled = filledCriteria(fb, nReq);
       hasNote = fb.note !== null && fb.note !== undefined;
       if (hasNote) filled++;
-      allCriteria = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+      allCriteria = nReq > 0 && filledCriteria(fb, nReq) === nReq;
     }
-    var completionPct = Math.round((filled / 6) * 100);
+    var completionPct = Math.round((filled / (nReq + 1)) * 100);
     var isComplete = hasNote && allCriteria;
     var isPartial = !isComplete && filled > 0;
 

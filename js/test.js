@@ -26,6 +26,9 @@
   var allJourneys = journeysData.journeys;
   var previewParam = isPreview ? '&preview' : '';
   var criteriaFields = ['critere_navigation', 'critere_comprehension', 'critere_performance', 'critere_fonctionnel', 'critere_design'];
+  // Number of DEFINED criteria for a journey (3 to 5) — some journeys have fewer than 5.
+  function reqCrit(j) { return (j && j.criteria ? j.criteria.filter(function(c) { return c; }).length : 5); }
+  function countFilledFb(fb, n) { var c = 0; for (var i = 0; i < n; i++) { if (fb[criteriaFields[i]]) c++; } return c; }
 
   // Load all feedbacks for sidebar (once, updated on save)
   var allFeedbacks = [];
@@ -49,10 +52,11 @@
   // ========== SIDEBAR (built once, never destroyed) ==========
   var sidebarNav = document.getElementById('journey-list');
 
-  function fbStatus(fb) {
+  function fbStatus(j, fb) {
     if (!fb) return 'todo';
     var hasNote = fb.note !== null && fb.note !== undefined;
-    var allC = fb.critere_navigation && fb.critere_comprehension && fb.critere_performance && fb.critere_fonctionnel && fb.critere_design;
+    var nReq = reqCrit(j);
+    var allC = nReq > 0 && countFilledFb(fb, nReq) === nReq;
     if (hasNote && allC) return 'done';
     if (hasNote || fb.statut_realisation === 'en_cours' || fb.statut_realisation === 'termine') return 'partial';
     return 'todo';
@@ -61,7 +65,7 @@
   function buildSidebar(activeId) {
     sidebarNav.innerHTML = '';
     var groups = { todo: [], partial: [], done: [] };
-    allJourneys.forEach(function(j) { groups[fbStatus(fbMap[j.id])].push(j); });
+    allJourneys.forEach(function(j) { groups[fbStatus(j, fbMap[j.id])].push(j); });
 
     var groupDefs = [
       { key: 'todo', label: 'À faire', color: 'text-neutral-400' },
@@ -151,7 +155,9 @@
     var hasNote = ratingInput.value !== '' && parseInt(ratingInput.value) > 0;
     var filledCriteria = 0;
     criteriaFields.forEach(function(f) { if (getCriteriaValue(f)) filledCriteria++; });
-    var allCriteria = filledCriteria === 5;
+    // Total = criteria actually rendered for this journey (3 to 5), not a hardcoded 5
+    var totalCriteria = document.querySelectorAll('#criteria-container [data-criteria]').length;
+    var allCriteria = totalCriteria > 0 && filledCriteria === totalCriteria;
     var anyCriteria = filledCriteria > 0;
     var hasText = (document.getElementById('fb-comment').value || '').trim() ||
                   (document.getElementById('fb-verbatim').value || '').trim() ||
@@ -291,6 +297,7 @@
     var resetBtn = 'criteria-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-neutral-200 bg-white text-neutral-500 transition-all';
 
     journey.criteria.forEach(function(label, i) {
+      if (!label) return; // skip undefined criteria (journeys with fewer than 5)
       var fieldName = criteriaFields[i];
       var div = document.createElement('div');
       div.className = 'flex items-center gap-3';
